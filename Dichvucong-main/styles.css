@@ -25,10 +25,10 @@ html {
 }
 
 body {
-    font-family: 'Arial', 'Helvetica', 'Roboto', sans-serif;
+    font-family: 'Nunito', 'Arial', 'Helvetica', sans-serif;
     background: #ffffff;
     min-height: 100vh;
-    color: #212529;
+    color: #1E2F41;
     line-height: 1.6;
     font-size: 15px;
     -webkit-font-smoothing: antialiased;
@@ -140,12 +140,12 @@ body {
 }
 
 .logo-main-text {
-    color: #8B0000;
-    font-weight: 600;
+    color: #CE7A58;
+    font-weight: 800;
     font-size: 18px;
     line-height: 1.2;
     letter-spacing: 0.3px;
-    font-family: 'Times New Roman', 'Georgia', serif;
+    font-family: 'Nunito', 'Times New Roman', serif;
     display: flex;
     align-items: baseline;
 }
@@ -166,9 +166,10 @@ body {
 .logo-tagline {
     color: #6c757d;
     font-size: 12px;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.4;
     font-style: normal;
+    font-family: 'Nunito', sans-serif;
 }
 
 .header-actions {
@@ -240,49 +241,49 @@ body {
 
 .theme-option span {
     font-size: 13px;
-    color: #212529;
+    color: #1E2F41;
 }
 
 .btn-login,
 .btn-register {
-    padding: 10px 20px;
-    border-radius: 6px;
+    padding: 8px 20px;
+    border-radius: 4px;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
     transition: all 0.2s ease;
     font-size: 14px;
     white-space: nowrap;
     display: inline-block;
     background: white;
-    border: 2px solid #D2691E;
-    color: #6c757d;
+    border: 1.5px solid #CE7A58;
+    color: #CE7A58;
+    font-family: 'Nunito', sans-serif;
 }
 
 .btn-login:hover {
-    background: #FFF8DC;
-    color: #CD853F;
-    border-color: #CD853F;
+    background: #CE7A58;
+    color: #ffffff;
+    border-color: #CE7A58;
 }
 
 .btn-register:hover {
-    background: #FFF8DC;
-    color: #CD853F;
-    border-color: #CD853F;
+    background: #CE7A58;
+    color: #ffffff;
+    border-color: #CE7A58;
 }
 
 /* Navigation */
 .nav-wrapper {
-    background: url("/mnt/data/7321797a-c824-49c1-ac8d-6417d03d4527.png") center/contain no-repeat;
-    background-color: #ffffff;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
+    background-color: #3d2010;
+    border-top: none;
+    border-bottom: none;
     padding: 0;
     display: block;
     width: 100%;
 }
 
 .main-nav {
-    background: #ffffff;
+    background: #3d2010;
     padding: 0;
     position: relative;
     display: block;
@@ -310,7 +311,7 @@ body {
     display: block;
     width: 100%;
     height: 3px;
-    background: #8B4513;
+    background: #ffffff;
     border-radius: 2px;
     transition: all 0.3s;
 }
@@ -343,13 +344,14 @@ body {
     display: flex;
     align-items: center;
     padding: 16px 20px;
-    color: #000000;
+    color: #ffffff;
     text-decoration: none;
     transition: all 0.2s ease;
     font-weight: 700;
     border-right: none;
     white-space: nowrap;
     font-size: 15px;
+    font-family: 'Nunito', sans-serif;
 }
 
 .nav-link span {
@@ -363,6 +365,7 @@ body {
 .nav-item-home .nav-link {
     padding: 14px;
     justify-content: center;
+    background: #2d1508;
 }
 
 .nav-link:hover,
@@ -647,7 +650,7 @@ body {
     border: none;
     border-radius: 6px;
     font-size: 14px;
-    color: #212529;
+    color: #1E2F41;
     background: transparent;
     font-family: inherit;
     box-shadow: none;
@@ -760,7 +763,7 @@ body {
     border-radius: 8px;
     font-size: 14px;
     background: white;
-    color: #212529;
+    color: #1E2F41;
     font-family: inherit;
     transition: all 0.2s ease;
 }
@@ -858,7 +861,7 @@ body {
     font-size: 15px;
     font-weight: 600;
     line-height: 1.5;
-    color: #212529;
+    color: #1E2F41;
 }
 
 /* Notifications Section */
@@ -1063,7 +1066,7 @@ body {
 
 .notification-text {
     font-size: 14px;
-    color: #000000;
+    color: #1E2F41;
     line-height: 1.6;
     font-weight: 600;
 }
@@ -1093,12 +1096,12 @@ body {
 }
 
 .category-title {
-    color: #D2691E;
+    color: #CE7A58;
     font-size: 18px;
     margin-bottom: 18px;
     padding-bottom: 12px;
-    border-bottom: 2px solid #D2691E;
-    font-weight: 600;
+    border-bottom: 2px solid #CE7A58;
+    font-weight: 800;
     text-transform: uppercase;
     display: flex;
     align-items: center;
@@ -1106,6 +1109,7 @@ body {
     gap: 8px;
     letter-spacing: 0.5px;
     text-align: center;
+    font-family: 'Nunito', sans-serif;
 }
 
 .category-icon {
@@ -1119,7 +1123,7 @@ body {
 }
 
 .category-link {
-    color: #212529;
+    color: #1E2F41;
     text-decoration: none;
     padding: 12px 14px;
     border-radius: 8px;
@@ -1128,7 +1132,9 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    font-size: 16px;
+    font-size: 15px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 500;
 }
 
 .category-link-icon {
@@ -1154,20 +1160,20 @@ body {
     transform: scale(1.1);
 }
 
-/* DOANH NGHIỆP Section - Icon màu đỏ đậm */
+/* DOANH NGHIỆP Section - Icon màu đỏ terracotta */
 .category-section-business .category-link-icon {
-    color: #8B0000;
+    color: #CE7A58;
     opacity: 1;
 }
 
 .category-section-business .category-link:hover {
-    background: #fff5f5;
-    border-left-color: #8B0000;
-    color: #8B0000;
+    background: #fdf5f2;
+    border-left-color: #CE7A58;
+    color: #CE7A58;
 }
 
 .category-section-business .category-link:hover .category-link-icon {
-    color: #8B0000;
+    color: #CE7A58;
     transform: scale(1.1);
 }
 
@@ -1344,7 +1350,7 @@ body {
     .nav-link {
         border-right: none;
         padding: 14px 18px;
-        color: #000000;
+        color: #1E2F41;
     }
 
     .submenu {
@@ -1362,7 +1368,7 @@ body {
 
     .submenu a {
         padding: 12px 18px 12px 40px;
-        color: #212529;
+        color: #1E2F41;
     }
 
     .submenu a:hover {
@@ -1450,7 +1456,7 @@ body {
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
-    color: #212529;
+    color: #1E2F41;
     font-size: 14px;
 }
 
@@ -1465,7 +1471,7 @@ body {
     transition: all 0.2s ease;
     font-family: inherit;
     background: white;
-    color: #212529;
+    color: #1E2F41;
 }
 
 .form-group input:focus,
@@ -1497,7 +1503,7 @@ body {
 
 .btn-secondary {
     background: #f8f9fa;
-    color: #212529;
+    color: #1E2F41;
     border: 1px solid #dee2e6;
 }
 
@@ -1525,7 +1531,7 @@ body {
 }
 
 .section-card-title {
-    color: #212529;
+    color: #1E2F41;
     font-size: 20px;
     font-weight: 600;
     margin: 0;
@@ -1549,7 +1555,7 @@ body {
 .appointment-item-title {
     font-size: 14px;
     font-weight: 600;
-    color: #212529;
+    color: #1E2F41;
     margin-bottom: 8px;
 }
 
@@ -1568,7 +1574,7 @@ body {
 
 .appointment-item-info-value {
     font-weight: 500;
-    color: #212529;
+    color: #1E2F41;
     font-size: 13px;
 }
 
@@ -2059,7 +2065,7 @@ body {
 .modal-header h2 {
     margin: 0;
     font-size: 24px;
-    color: #212529;
+    color: #1E2F41;
     font-weight: 700;
     text-align: center;
     flex: 1;
@@ -2084,7 +2090,7 @@ body {
 
 .modal-close:hover {
     background: #e9ecef;
-    color: #212529;
+    color: #1E2F41;
     transform: translateY(-50%) scale(1.1);
 }
 
@@ -2150,7 +2156,7 @@ body {
 .procedure-list a {
     display: block;
     padding: 10px 12px;
-    color: #212529;
+    color: #1E2F41;
     text-decoration: none;
     border-radius: 6px;
     transition: all 0.2s ease;
@@ -2189,7 +2195,7 @@ body {
 .procedure-link {
     flex: 1;
     text-decoration: none;
-    color: #212529;
+    color: #1E2F41;
     font-size: 15px;
     padding: 0;
     border: none;
@@ -2243,7 +2249,7 @@ body {
 .procedure-info p {
     margin: 8px 0;
     font-size: 14px;
-    color: #212529;
+    color: #1E2F41;
     line-height: 1.6;
 }
 
@@ -2264,7 +2270,7 @@ body {
     display: block;
     margin-bottom: 5px;
     font-weight: 600;
-    color: #212529;
+    color: #1E2F41;
     font-size: 14px;
 }
 
@@ -2548,7 +2554,7 @@ body {
     display: block;
     margin-bottom: 6px;
     font-weight: 500;
-    color: #212529;
+    color: #1E2F41;
     font-size: 14px;
 }
 
@@ -2792,7 +2798,7 @@ select.form-input {
 
 .btn-reset {
     background: #ffc107;
-    color: #212529;
+    color: #1E2F41;
 }
 
 .btn-reset:hover {
