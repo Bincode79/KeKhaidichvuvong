@@ -140,14 +140,16 @@ body {
 }
 
 .logo-main-text {
-    color: #CE7A58;
-    font-weight: 800;
-    font-size: 18px;
+    color: #903938;
+    font-weight: bold;
+    font-size: 22px;
     line-height: 1.2;
-    letter-spacing: 0.3px;
-    font-family: 'Nunito', 'Times New Roman', serif;
+    letter-spacing: 0.5px;
+    font-family: 'Lora', 'Times New Roman', serif;
+    font-style: italic;
     display: flex;
     align-items: baseline;
+    text-transform: uppercase;
 }
 
 .logo-styled-c {
@@ -164,12 +166,12 @@ body {
 }
 
 .logo-tagline {
-    color: #6c757d;
-    font-size: 12px;
-    font-weight: 500;
+    color: #903938;
+    font-size: 13px;
+    font-weight: 400;
     line-height: 1.4;
-    font-style: normal;
-    font-family: 'Nunito', sans-serif;
+    font-style: italic;
+    font-family: 'Lora', serif;
 }
 
 .header-actions {
@@ -274,21 +276,21 @@ body {
 
 /* Navigation */
 .nav-wrapper {
-    background-color: #3d2010;
-    border-top: none;
-    border-bottom: none;
+    background-color: #f5f5f5;
+    border-top: 1px solid #e2e2e2;
+    border-bottom: 1px solid #e2e2e2;
     padding: 0;
     display: block;
     width: 100%;
 }
 
 .main-nav {
-    background: #3d2010;
+    background: #f5f5f5;
     padding: 0;
     position: relative;
     display: block;
     width: 100%;
-    min-height: 50px;
+    min-height: 42px;
 }
 
 .nav-toggle {
@@ -343,15 +345,16 @@ body {
 .nav-link {
     display: flex;
     align-items: center;
-    padding: 16px 20px;
-    color: #ffffff;
+    padding: 10px 15px;
+    color: #1E2F41;
     text-decoration: none;
-    transition: all 0.2s ease;
-    font-weight: 700;
+    transition: background 0.2s ease, color 0.2s ease;
+    font-weight: 500;
     border-right: none;
     white-space: nowrap;
     font-size: 15px;
     font-family: 'Nunito', sans-serif;
+    height: 42px;
 }
 
 .nav-link span {
@@ -363,22 +366,19 @@ body {
 }
 
 .nav-item-home .nav-link {
-    padding: 14px;
+    padding: 10px 14px;
     justify-content: center;
-    background: #2d1508;
+    background: #CE7A58;
+    color: #fff;
 }
 
 .nav-link:hover,
 .nav-item:hover>.nav-link {
-    background-image: linear-gradient(180deg, rgba(206, 122, 88, 0.95), rgba(201, 74, 44, 0.95)), url('dongson-pattern.svg');
-    background-size: cover, auto;
-    background-repeat: no-repeat, repeat;
-    background-position: center;
+    background: #CE7A58;
     color: #ffffff !important;
-    transition: all 0.3s ease;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
+    transform: none;
+    box-shadow: none;
+    border-radius: 0;
 }
 
 .nav-link:hover span,
@@ -1197,29 +1197,26 @@ body {
 .category-section {
     background: #ffffff;
     padding: 0;
-    border-radius: 4px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e9ecef;
+    border-radius: 3px;
+    box-shadow: none;
+    border: 1px solid #e2e2e2;
     overflow: hidden;
 }
 
 .category-title {
     color: #CE7A58;
-    font-size: 18px;
+    font-size: 20px;
     margin: 0;
-    padding: 10px 14px;
-    border-bottom: 2px solid #CE7A58;
-    font-weight: 800;
+    padding: 8px 15px;
+    font-weight: 700;
     text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
+    display: block;
     letter-spacing: 0.5px;
-    text-align: left;
+    text-align: center;
     font-family: 'Nunito', sans-serif;
-    background: #fff;
-    font-size: 16px;
+    background: rgba(30, 47, 65, 0.07);
+    border-bottom: 3px solid #CE7A58;
+    border-radius: 0;
 }
 
 .category-title a {
@@ -1239,74 +1236,68 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0;
+    padding: 0;
 }
 
 .category-link {
     color: #1E2F41;
     text-decoration: none;
-    padding: 0;
-    transition: background 0.15s ease;
-    border-left: none;
     display: flex;
     align-items: center;
-    gap: 0;
-    font-size: 14px;
+    padding: 10px 15px;
+    position: relative;
+    font-size: 15px;
     font-family: 'Nunito', sans-serif;
     font-weight: 500;
+    background: #ffffff;
     border-radius: 0;
-    border-bottom: 1px solid #eee;
+    margin-bottom: 0;
+    min-height: 44px;
+    line-height: 1.4;
+    transition: background 0.15s ease, color 0.15s ease;
+    border-bottom: 1px solid #e2e2e2;
 }
 
 .category-link:last-child {
     border-bottom: none;
 }
 
-.category-link:nth-child(odd) {
-    background: #ffffff;
-}
-
-.category-link:nth-child(even) {
-    background: #f6f7f9;
-}
-
 .category-link:hover {
-    background: #ede8e4 !important;
+    background: #fff5f0;
     color: #CE7A58;
-    transform: none;
-    padding-left: 0;
 }
 
 .category-icon-box {
     flex-shrink: 0;
-    width: 42px;
-    height: 42px;
+    width: 34px;
+    height: 34px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #CE7A58;
+    background: rgba(206, 122, 88, 0.12);
+    border-radius: 4px;
     margin-right: 12px;
 }
 
 .category-icon-box.business-icon {
-    background: #CE7A58;
+    background: rgba(206, 122, 88, 0.12);
 }
 
 .category-img-icon {
-    width: 26px;
-    height: 26px;
+    width: 22px;
+    height: 22px;
     object-fit: contain;
-    filter: brightness(0) invert(1);
+    filter: none;
 }
 
 .category-link-text {
     flex: 1;
-    padding: 10px 12px 10px 0;
     line-height: 1.4;
 }
 
 /* DOANH NGHIỆP Section */
 .category-section-business .category-link:hover {
-    background: #ede8e4 !important;
+    background: #fff5f0;
     color: #CE7A58;
 }
 
