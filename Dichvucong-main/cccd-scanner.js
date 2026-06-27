@@ -2,6 +2,8 @@
 
 var _cccdData = null;
 var _scanTimer = null;
+var _countdownTimer = null;
+var _secondsLeft = 50;
 
 // Dữ liệu giả lập
 var _hoNam = ['Nguyễn','Trần','Lê','Phạm','Hoàng','Phan','Vũ','Đặng','Bùi','Đỗ','Hồ','Ngô','Dương','Lý'];
@@ -34,7 +36,6 @@ function rndInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) +
 function pad(n) { return String(n).padStart(2, '0'); }
 
 function genCCCDNumber() {
-    // Format: 3 digits tỉnh + 3 digits giới tính/năm + 6 digits ngẫu nhiên
     var prefix = ['001','002','004','048','079','260','274','292'];
     return rnd(prefix) + String(rndInt(0,1)) + String(rndInt(0,9)) + String(rndInt(100000,999999));
 }
@@ -69,7 +70,6 @@ function genFakeData() {
         expireStr = pad(issueDay) + '/' + pad(issueMonth) + '/' + (issueYear + 25);
     }
     var tinh = rnd(_tinh);
-    var hometown = tinh;
     var soNha = rndInt(1, 350);
     var address = soNha + ' ' + rnd(_duong) + ', ' + rnd(_phuong) + ', ' + rnd(_quan) + ', ' + tinh;
     return {
@@ -78,7 +78,7 @@ function genFakeData() {
         dob: dob,
         gender: gender,
         nation: 'Việt Nam',
-        hometown: hometown,
+        hometown: tinh,
         address: address,
         issueDate: issueDate,
         expireDate: expireStr,
@@ -86,125 +86,158 @@ function genFakeData() {
     };
 }
 
-// ===== OPEN / CLOSE =====
-function openCCCDScanner(e) {
-    if (e) e.preventDefault();
-    document.getElementById('cccdModal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-    showCCCDStep(1);
-}
-
-function closeCCCDScanner() {
-    if (_scanTimer) { clearInterval(_scanTimer); _scanTimer = null; }
-    document.getElementById('cccdModal').classList.remove('open');
-    document.body.style.overflow = '';
-}
-
-function showCCCDStep(n) {
-    [1,2,3].forEach(function(i) {
-        var el = document.getElementById('cccdStep' + i);
-        if (el) el.style.display = (i === n ? 'flex' : 'none');
-    });
-}
-
-// ===== SCAN SIMULATION =====
+// ===== SCAN MESSAGES =====
 var _scanMessages = [
-    'Đang tìm chip NFC...',
-    'Phát hiện chip CCCD...',
+    'Đang tìm chip NFC trên thẻ...',
+    'Phát hiện tín hiệu NFC...',
+    'Kết nối chip CCCD thành công...',
     'Đọc dữ liệu cơ bản...',
     'Xác thực chữ ký số...',
     'Giải mã thông tin hộ chiếu...',
     'Đọc dữ liệu sinh trắc học...',
     'Kiểm tra tính toàn vẹn dữ liệu...',
-    'Hoàn tất đọc chip...'
+    'Đang hoàn tất xác thực...'
 ];
 
-function startCCCDScan() {
+// ===== OPEN / CLOSE =====
+function openCCCDScanner(e) {
+    if (e) e.preventDefault();
+    var overlay = document.getElementById('cccdModal');
+    if (!overlay) return;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    _startFullscreenScan();
+}
+
+function closeCCCDScanner() {
+    _clearAllTimers();
+    var overlay = document.getElementById('cccdModal');
+    if (overlay) overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    _resetScanUI();
+}
+
+function _clearAllTimers() {
     if (_scanTimer) { clearInterval(_scanTimer); _scanTimer = null; }
-    showCCCDStep(2);
-    var progress = 0;
-    var msgIdx = 0;
-    var fill = document.getElementById('cccdProgressFill');
+    if (_countdownTimer) { clearInterval(_countdownTimer); _countdownTimer = null; }
+}
+
+function _resetScanUI() {
+    _secondsLeft = 50;
+    _cccdData = null;
+    var countdown = document.getElementById('cccdCountdown');
+    if (countdown) { countdown.textContent = '50'; countdown.classList.remove('urgent'); }
+    var guide = document.getElementById('cccdGuideText');
+    if (guide) guide.textContent = 'Đặt thẻ CCCD vào trong khung để bắt đầu quét';
     var status = document.getElementById('cccdScanStatus');
-    var title = document.getElementById('cccdScanTitle');
-    fill.style.width = '0%';
-    status.textContent = _scanMessages[0];
-    title.textContent = 'Đang kết nối NFC...';
+    if (status) { status.textContent = 'Đang tìm chip NFC trên thẻ...'; status.classList.remove('active'); }
+    var ghost = document.getElementById('cccdCardGhost');
+    if (ghost) ghost.classList.remove('hidden');
+    var success = document.getElementById('cccdSuccessOverlay');
+    if (success) success.classList.remove('show');
+    var frame = document.getElementById('cccdFrame');
+    if (frame) {
+        frame.style.borderColor = '';
+        var corners = frame.querySelectorAll('.cccd-corner');
+        corners.forEach(function(c) { c.style.borderColor = ''; });
+    }
+    var scanLine = document.getElementById('cccdScanLine');
+    if (scanLine) { scanLine.style.display = ''; scanLine.style.animationPlayState = 'running'; }
+}
 
+// ===== MAIN SCAN FLOW =====
+function _startFullscreenScan() {
+    _resetScanUI();
+    _secondsLeft = 50;
+
+    // Scan complete happens at a random time between 8s and 38s
+    var scanCompleteAt = rndInt(8, 38);
+    var elapsed = 0;
+    var msgIdx = 0;
+
+    var status = document.getElementById('cccdScanStatus');
+    var countdown = document.getElementById('cccdCountdown');
+    var guide = document.getElementById('cccdGuideText');
+
+    // Start status cycling
     _scanTimer = setInterval(function() {
-        progress += rndInt(4, 9);
-        if (progress > 100) progress = 100;
-        fill.style.width = progress + '%';
-
-        var newMsgIdx = Math.floor(progress / (100 / _scanMessages.length));
-        if (newMsgIdx >= _scanMessages.length) newMsgIdx = _scanMessages.length - 1;
+        elapsed++;
+        var progress = elapsed / scanCompleteAt;
+        var newMsgIdx = Math.min(Math.floor(progress * _scanMessages.length), _scanMessages.length - 1);
         if (newMsgIdx !== msgIdx) {
             msgIdx = newMsgIdx;
-            status.textContent = _scanMessages[msgIdx];
+            if (status) {
+                status.textContent = _scanMessages[msgIdx];
+                status.classList.add('active');
+                setTimeout(function() { if (status) status.classList.remove('active'); }, 600);
+            }
         }
-        if (progress >= 30) title.textContent = 'Đang đọc dữ liệu chip...';
-        if (progress >= 70) title.textContent = 'Xác thực dữ liệu...';
-
-        if (progress >= 100) {
+        if (elapsed === 3 && guide) guide.textContent = 'Giữ yên thẻ, đang đọc dữ liệu chip...';
+        if (elapsed >= scanCompleteAt) {
             clearInterval(_scanTimer);
             _scanTimer = null;
-            setTimeout(showCCCDResult, 500);
+            _showSuccess();
         }
-    }, 180);
+    }, 1000);
+
+    // Countdown timer (50s)
+    _countdownTimer = setInterval(function() {
+        _secondsLeft--;
+        if (countdown) {
+            countdown.textContent = _secondsLeft;
+            if (_secondsLeft <= 10) countdown.classList.add('urgent');
+        }
+        if (_secondsLeft <= 0) {
+            clearInterval(_countdownTimer);
+            _countdownTimer = null;
+            // Timeout — if scan didn't finish, force return home
+            _returnHome();
+        }
+    }, 1000);
 }
 
-function showCCCDResult() {
+function _showSuccess() {
+    _clearAllTimers();
     _cccdData = genFakeData();
-    document.getElementById('rf_id').textContent = _cccdData.id;
-    document.getElementById('rf_name').textContent = _cccdData.name;
-    document.getElementById('rf_dob').textContent = _cccdData.dob;
-    document.getElementById('rf_gender').textContent = _cccdData.gender;
-    document.getElementById('rf_nation').textContent = _cccdData.nation;
-    document.getElementById('rf_hometown').textContent = _cccdData.hometown;
-    document.getElementById('rf_address').textContent = _cccdData.address;
-    document.getElementById('rf_issue').textContent = _cccdData.issueDate;
-    document.getElementById('rf_expire').textContent = _cccdData.expireDate;
-    document.getElementById('rf_issueplace').textContent = _cccdData.issuePlace;
-    showCCCDStep(3);
-}
 
-function confirmCCCDData() {
-    if (!_cccdData) return;
-    // Điền vào form đăng ký nếu có
-    var fillField = function(name, val) {
-        var el = document.querySelector('[name="' + name + '"]');
-        if (el) el.value = val;
-    };
-    fillField('fullName', _cccdData.name.replace(/\b\w/g, function(c){ return c.toUpperCase(); }).replace(/\B\w/g, function(c){ return c.toLowerCase(); }));
-    fillField('idNumber', _cccdData.id);
-    fillField('permanentAddress', _cccdData.address);
-    var genderVal = _cccdData.gender === 'Nam' ? 'nam' : 'nu';
-    var genderEl = document.querySelector('[name="gender"]');
-    if (genderEl) genderEl.value = genderVal;
-    // Chuyển DOB sang format yyyy-mm-dd
-    var parts = _cccdData.dob.split('/');
-    if (parts.length === 3) {
-        var isoDate = parts[2] + '-' + parts[1] + '-' + parts[0];
-        fillField('birthDate', isoDate);
-    }
-    closeCCCDScanner();
-    // Hiện thông báo
-    var notif = document.getElementById('notification');
-    if (notif) {
-        notif.textContent = '✅ Đã điền thông tin CCCD vào biểu mẫu!';
-        notif.className = 'notification success show';
-        setTimeout(function() { notif.classList.remove('show'); }, 3000);
-    }
-}
-
-// Click overlay để đóng
-document.addEventListener('DOMContentLoaded', function() {
-    var overlay = document.getElementById('cccdModal');
-    if (overlay) {
-        overlay.addEventListener('click', function(e) {
-            if (e.target === overlay) closeCCCDScanner();
+    // Green corners
+    var frame = document.getElementById('cccdFrame');
+    if (frame) {
+        var corners = frame.querySelectorAll('.cccd-corner');
+        corners.forEach(function(c) {
+            c.style.borderColor = '#00e676';
         });
     }
+
+    // Stop scan line
+    var scanLine = document.getElementById('cccdScanLine');
+    if (scanLine) {
+        scanLine.style.animationPlayState = 'paused';
+        scanLine.style.background = 'linear-gradient(90deg, transparent 0%, #00e676 20%, #fff 50%, #00e676 80%, transparent 100%)';
+        scanLine.style.boxShadow = '0 0 12px 4px rgba(0,230,118,0.6)';
+    }
+
+    // Hide ghost
+    var ghost = document.getElementById('cccdCardGhost');
+    if (ghost) ghost.classList.add('hidden');
+
+    // Show success overlay
+    var successName = document.getElementById('cccdSuccessName');
+    if (successName) successName.textContent = _cccdData.name;
+    var successOverlay = document.getElementById('cccdSuccessOverlay');
+    if (successOverlay) successOverlay.classList.add('show');
+
+    // Auto return home after 2.5s
+    setTimeout(_returnHome, 2500);
+}
+
+function _returnHome() {
+    closeCCCDScanner();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ===== EVENT LISTENERS =====
+document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') closeCCCDScanner();
     });
