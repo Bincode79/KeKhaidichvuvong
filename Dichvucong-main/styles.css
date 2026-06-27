@@ -3267,3 +3267,422 @@ select.form-input {
 .admin-footer-link:hover {
     color: rgba(255,255,255,0.7);
 }
+
+/* ==================== MOBILE OPTIMIZATIONS ==================== */
+
+/* Fix iOS background-attachment: fixed - không hỗ trợ trên iOS */
+@media (max-width: 968px) {
+    .search-featured-section {
+        background-attachment: scroll;
+    }
+}
+
+/* ---- TABLET (481px - 968px): Logo + hamburger cùng 1 hàng ---- */
+@media (max-width: 968px) {
+    .main-header {
+        padding: 10px 0;
+    }
+
+    .header-content {
+        flex-direction: row !important;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0;
+    }
+
+    .logo-section {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .logo {
+        max-height: 54px;
+        max-width: 260px;
+    }
+
+    .logo-placeholder {
+        gap: 10px;
+    }
+
+    .logo-emblem {
+        width: 54px;
+        height: 54px;
+        flex-shrink: 0;
+    }
+
+    .logo-main-text {
+        font-size: 16px;
+    }
+
+    .logo-tagline {
+        font-size: 12px;
+    }
+
+    .header-actions {
+        flex-shrink: 0;
+        width: auto;
+        justify-content: flex-end;
+        margin-left: 12px;
+    }
+
+    /* Nav toggle - thay vì position:fixed, dùng relative trong header */
+    .nav-toggle {
+        position: relative !important;
+        right: auto !important;
+        top: auto !important;
+        width: 40px;
+        height: 40px;
+        border-radius: 6px;
+    }
+
+    /* Điều hướng: khoảng cách nav hợp lý */
+    .main-nav {
+        min-height: 44px;
+    }
+}
+
+/* ---- TABLET 2 cột featured services (600px - 968px) ---- */
+@media (min-width: 601px) and (max-width: 968px) {
+    .featured-services-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px;
+    }
+
+    .service-categories {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* ---- MOBILE (≤ 768px): Tất cả cải tiến chính ---- */
+@media (max-width: 768px) {
+
+    /* Header gọn hơn trên mobile */
+    .main-header {
+        padding: 8px 0;
+    }
+
+    .logo {
+        max-height: 48px;
+        max-width: 220px;
+    }
+
+    .logo-emblem {
+        width: 48px;
+        height: 48px;
+    }
+
+    .logo-main-text {
+        font-size: 14px;
+        letter-spacing: 0;
+    }
+
+    .logo-tagline {
+        font-size: 10px;
+        display: none;
+    }
+
+    /* Header-actions: ẩn trên mobile, nút đã ở mobile nav menu */
+    .header-actions {
+        display: none !important;
+    }
+
+    /* Nav mobile: tăng z-index menu và cải thiện overlay */
+    .nav-menu {
+        padding-top: 70px;
+    }
+
+    .nav-link {
+        min-height: 48px;
+        font-size: 15px;
+    }
+
+    .submenu a {
+        min-height: 44px;
+        padding-left: 36px;
+    }
+
+    /* Search section: gọn hơn trên mobile */
+    .search-featured-section {
+        padding: 14px 0 10px;
+    }
+
+    .search-main-row {
+        padding: 6px 12px;
+        border-radius: 8px;
+        margin-bottom: 12px;
+    }
+
+    .search-input-main {
+        font-size: 16px; /* tránh zoom trên iOS */
+        padding: 8px 50px 8px 8px;
+    }
+
+    .btn-search-main {
+        width: 34px;
+        height: 34px;
+    }
+
+    .btn-search-advanced {
+        font-size: 13px;
+        min-width: auto;
+        padding: 10px 0;
+    }
+
+    /* Featured services: 1 cột trên mobile nhỏ */
+    .featured-services-grid {
+        grid-template-columns: 1fr !important;
+        gap: 8px;
+    }
+
+    .featured-service-btn {
+        min-height: 50px;
+        font-size: 14px;
+    }
+
+    /* News section: 1 tin/hàng trên mobile */
+    .news-slide {
+        grid-template-columns: 1fr !important;
+        display: flex !important;
+        flex-direction: column;
+    }
+
+    .news-item {
+        border-right: none !important;
+        border-bottom: 1px solid #e9e0d8;
+        padding: 14px 16px;
+    }
+
+    .news-item:last-child {
+        border-bottom: none;
+    }
+
+    .news-title {
+        font-size: 13px;
+        -webkit-line-clamp: 2;
+    }
+
+    .news-nav-btn {
+        padding: 0 8px;
+        font-size: 22px;
+    }
+
+    /* Service categories: 1 cột trên mobile */
+    .service-categories {
+        grid-template-columns: 1fr !important;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .main-content {
+        padding: 14px 0 28px;
+    }
+
+    .category-title {
+        font-size: 17px;
+        padding: 10px 15px;
+    }
+
+    .category-links {
+        padding: 8px;
+        gap: 4px;
+    }
+
+    .category-link {
+        font-size: 14px;
+        padding: 10px 12px;
+        min-height: 46px;
+    }
+
+    .category-icon-box {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+    }
+
+    .category-img-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Footer: wrap gọn trên mobile */
+    .main-footer {
+        padding: 20px 0;
+        margin-top: 30px;
+    }
+
+    .footer-content {
+        gap: 8px;
+    }
+
+    .footer-info {
+        flex-direction: column !important;
+        gap: 6px;
+        text-align: center;
+    }
+
+    .footer-info p {
+        white-space: normal !important;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    /* Toast notification: không tràn màn hình */
+    .notification {
+        right: 10px;
+        left: 10px;
+        max-width: calc(100vw - 20px);
+        font-size: 13px;
+        padding: 12px 16px;
+        transform: translateY(-80px);
+    }
+
+    .notification.show {
+        transform: translateY(0);
+    }
+
+    /* QR payment section */
+    .qr-payment-inner {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .qr-payment-img img {
+        width: 160px;
+        height: 160px;
+    }
+
+    .qr-payment-notice {
+        max-width: 100%;
+    }
+
+    .qr-payment-label {
+        min-width: 110px;
+    }
+}
+
+/* ---- MOBILE NHỎ (≤ 480px) ---- */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+
+    .main-header {
+        padding: 7px 0;
+    }
+
+    .logo {
+        max-height: 42px;
+        max-width: 180px;
+    }
+
+    .logo-emblem {
+        width: 42px;
+        height: 42px;
+    }
+
+    .logo-main-text {
+        font-size: 13px;
+    }
+
+    .nav-toggle {
+        width: 36px !important;
+        height: 36px !important;
+    }
+
+    .search-featured-section {
+        padding: 10px 0 8px;
+    }
+
+    .search-featured-section > .container {
+        padding: 6px 10px 10px;
+    }
+
+    .search-main-row {
+        padding: 5px 10px;
+        margin-bottom: 8px;
+    }
+
+    .featured-service-btn {
+        min-height: 46px;
+        padding: 10px 12px;
+    }
+
+    .featured-service-title {
+        font-size: 13px;
+    }
+
+    .category-link {
+        font-size: 13px;
+        padding: 9px 10px;
+        min-height: 44px;
+    }
+
+    .category-title {
+        font-size: 15px;
+    }
+
+    /* Form inputs: tránh zoom iOS */
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="password"],
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
+
+    /* Modal full screen trên điện thoại nhỏ */
+    .modal-overlay {
+        padding: 0;
+        align-items: flex-end;
+    }
+
+    .modal-container {
+        border-radius: 16px 16px 0 0;
+        max-height: 96vh;
+        margin: 0 !important;
+    }
+
+    .modal-header {
+        padding: 16px 18px;
+        border-radius: 16px 16px 0 0;
+    }
+
+    .modal-header h2 {
+        font-size: 17px;
+    }
+
+    .modal-body {
+        padding: 16px;
+    }
+
+    .btn-action, .btn-submit, .btn-cancel {
+        font-size: 14px;
+        padding: 11px 16px;
+    }
+
+    /* Form section tiêu đề */
+    .form-section-title {
+        font-size: 15px;
+    }
+
+    /* News nav buttons lớn hơn */
+    .news-nav-btn {
+        padding: 0 6px;
+        font-size: 20px;
+        min-width: 32px;
+    }
+
+    /* Footer */
+    .main-footer {
+        padding: 16px 0;
+    }
+
+    .footer-info p {
+        font-size: 11px;
+    }
+}
