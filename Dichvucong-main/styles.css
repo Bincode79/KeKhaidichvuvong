@@ -3175,3 +3175,81 @@ select.form-input {
         width: 100%;
     }
 }
+
+/* QR Payment Section */
+.qr-payment-section {
+    background: linear-gradient(135deg, #fff9f9 0%, #fff3f3 100%);
+    border-top: 3px solid #c0392b;
+    border-bottom: 3px solid #c0392b;
+    padding: 32px 0;
+    display: none;
+}
+.qr-payment-section.visible {
+    display: block;
+}
+.qr-payment-inner {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.qr-payment-img {
+    border: 4px solid #c0392b;
+    border-radius: 14px;
+    box-shadow: 0 8px 28px rgba(192,57,43,0.2);
+    background: #fff;
+    padding: 6px;
+}
+.qr-payment-img img {
+    width: 190px;
+    height: 190px;
+    display: block;
+    border-radius: 8px;
+}
+.qr-payment-info h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #c0392b;
+    margin-bottom: 14px;
+}
+.qr-payment-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    align-items: flex-start;
+}
+.qr-payment-label {
+    color: #888;
+    font-weight: 600;
+    white-space: nowrap;
+    min-width: 140px;
+}
+.qr-payment-val {
+    color: #1E2F41;
+    font-weight: 700;
+}
+.qr-payment-notice {
+    margin-top: 14px;
+    background: #fff3cd;
+    border: 1px solid #f39c12;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #856404;
+    max-width: 380px;
+}
+
+/* Admin link in footer */
+.admin-footer-link {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.admin-footer-link:hover {
+    color: rgba(255,255,255,0.7);
+}
