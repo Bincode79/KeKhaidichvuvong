@@ -535,78 +535,72 @@
                 <span>Quét CCCD gắn Chip</span>
             </div>
             <div class="cccd-fs-topbar-right">
-                <div class="cccd-fs-timer" id="cccdCountdown">50</div>
+                <div class="cccd-fs-timer" id="cccdCountdown" style="display:none">50</div>
                 <button class="cccd-fs-close" onclick="closeCCCDScanner()">✕</button>
             </div>
         </div>
 
-        <!-- Body — card centered -->
-        <div class="cccd-fs-body">
-
-            <p class="cccd-fs-guide" id="cccdGuideText">Đặt thẻ CCCD dọc vào khung và giữ yên 30 giây</p>
-
-            <!-- Portrait CCCD frame (vertical) centered -->
-            <div class="cccd-fs-frame" id="cccdFrame">
-                <!-- Corner brackets -->
+        <!-- ══ PHASE 0: SẴN SÀNG ══ -->
+        <div class="cccd-phase" id="cccdPhaseReady">
+            <p class="cccd-fs-guide">Đặt thẻ CCCD theo chiều dọc vào khung bên dưới</p>
+            <div class="cccd-fs-frame cccd-frame-idle">
                 <span class="cccd-corner tl"></span>
                 <span class="cccd-corner tr"></span>
                 <span class="cccd-corner bl"></span>
                 <span class="cccd-corner br"></span>
-
-                <!-- Vertical scan line -->
-                <div class="cccd-scanline" id="cccdScanLine"></div>
-
-                <!-- Portrait CCCD card ghost -->
-                <div class="cccd-card-ghost" id="cccdCardGhost">
+                <div class="cccd-card-ghost">
                     <svg viewBox="0 0 160 252" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-                        <!-- Card outline dashed -->
                         <rect x="2" y="2" width="156" height="248" rx="10" fill="none" stroke="rgba(255,255,255,0.13)" stroke-width="1.5" stroke-dasharray="6 4"/>
-                        <!-- Red header band -->
                         <rect x="2" y="2" width="156" height="52" rx="10" fill="rgba(192,57,43,0.22)"/>
                         <rect x="2" y="38" width="156" height="16" fill="rgba(192,57,43,0.22)"/>
-                        <!-- Star emblem placeholder -->
                         <circle cx="80" cy="22" r="14" fill="none" stroke="rgba(255,214,0,0.3)" stroke-width="1.2"/>
                         <path d="M80 10 L82.4 17.6 L90.5 17.6 L84.1 22.4 L86.5 30 L80 25.2 L73.5 30 L75.9 22.4 L69.5 17.6 L77.6 17.6 Z" fill="rgba(255,214,0,0.25)"/>
-                        <!-- Title text lines -->
                         <rect x="20" y="42" width="120" height="4" rx="2" fill="rgba(255,255,255,0.18)"/>
                         <rect x="30" y="50" width="100" height="3.5" rx="1.5" fill="rgba(255,255,255,0.12)"/>
-                        <!-- Photo placeholder -->
                         <rect x="12" y="64" width="52" height="68" rx="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
                         <circle cx="38" cy="86" r="12" fill="rgba(255,255,255,0.1)"/>
                         <ellipse cx="38" cy="110" rx="18" ry="12" fill="rgba(255,255,255,0.08)"/>
-                        <!-- Chip -->
                         <rect x="74" y="64" width="26" height="18" rx="3" fill="rgba(255,214,0,0.2)" stroke="rgba(255,214,0,0.35)" stroke-width="1"/>
                         <line x1="80" y1="64" x2="80" y2="82" stroke="rgba(255,214,0,0.2)" stroke-width="0.8"/>
                         <line x1="86" y1="64" x2="86" y2="82" stroke="rgba(255,214,0,0.2)" stroke-width="0.8"/>
                         <line x1="92" y1="64" x2="92" y2="82" stroke="rgba(255,214,0,0.2)" stroke-width="0.8"/>
                         <line x1="74" y1="70" x2="100" y2="70" stroke="rgba(255,214,0,0.2)" stroke-width="0.8"/>
                         <line x1="74" y1="76" x2="100" y2="76" stroke="rgba(255,214,0,0.2)" stroke-width="0.8"/>
-                        <!-- NFC waves -->
                         <path d="M108 72 Q112 77 108 82" stroke="rgba(100,200,255,0.3)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
                         <path d="M113 68 Q119 77 113 86" stroke="rgba(100,200,255,0.25)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
                         <path d="M118 64 Q126 77 118 90" stroke="rgba(100,200,255,0.18)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                        <!-- Text field lines -->
                         <rect x="74" y="88" width="70" height="5" rx="2" fill="rgba(255,255,255,0.14)"/>
                         <rect x="74" y="98" width="55" height="4" rx="2" fill="rgba(255,255,255,0.09)"/>
                         <rect x="74" y="108" width="62" height="4" rx="2" fill="rgba(255,255,255,0.09)"/>
-                        <!-- Separator -->
                         <line x1="12" y1="140" x2="148" y2="140" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-                        <!-- More text lines -->
                         <rect x="12" y="148" width="136" height="5" rx="2" fill="rgba(255,255,255,0.1)"/>
                         <rect x="12" y="160" width="100" height="4" rx="2" fill="rgba(255,255,255,0.08)"/>
                         <rect x="12" y="171" width="118" height="4" rx="2" fill="rgba(255,255,255,0.07)"/>
                         <rect x="12" y="182" width="90" height="4" rx="2" fill="rgba(255,255,255,0.07)"/>
-                        <!-- MRZ bottom -->
                         <rect x="12" y="220" width="136" height="5" rx="1" fill="rgba(255,255,255,0.08)"/>
                         <rect x="12" y="230" width="136" height="5" rx="1" fill="rgba(255,255,255,0.07)"/>
                         <rect x="12" y="240" width="136" height="5" rx="1" fill="rgba(255,255,255,0.06)"/>
                     </svg>
                 </div>
+            </div>
+            <button class="cccd-btn-start" onclick="cccdStartScan()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M10 8 L16 12 L10 16 Z" fill="currentColor"/></svg>
+                Bắt đầu quét
+            </button>
+        </div>
 
-                <!-- Progress ring (30s fill) -->
+        <!-- ══ PHASE 1: ĐANG QUÉT ══ -->
+        <div class="cccd-phase" id="cccdPhaseScanning" style="display:none">
+            <p class="cccd-fs-guide" id="cccdGuideText">Giữ yên thẻ — đang đọc dữ liệu chip...</p>
+            <div class="cccd-fs-frame" id="cccdFrame">
+                <span class="cccd-corner tl"></span>
+                <span class="cccd-corner tr"></span>
+                <span class="cccd-corner bl"></span>
+                <span class="cccd-corner br"></span>
+                <div class="cccd-scanline" id="cccdScanLine"></div>
                 <div class="cccd-prog-ring-wrap" id="cccdProgRing">
                     <svg width="56" height="56" viewBox="0 0 56 56">
-                        <circle cx="28" cy="28" r="24" fill="rgba(0,0,0,0.5)" stroke="rgba(255,255,255,0.1)" stroke-width="3"/>
+                        <circle cx="28" cy="28" r="24" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.1)" stroke-width="3"/>
                         <circle cx="28" cy="28" r="24" fill="none" stroke="#00e5ff" stroke-width="3"
                             stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="150.8"
                             id="cccdRingPath" style="transform:rotate(-90deg);transform-origin:28px 28px;transition:stroke-dashoffset 1s linear;"/>
@@ -614,10 +608,8 @@
                     </svg>
                 </div>
             </div>
-
-            <!-- Status -->
             <div class="cccd-fs-status-area">
-                <p class="cccd-fs-status" id="cccdScanStatus">Đang tìm chip NFC trên thẻ...</p>
+                <p class="cccd-fs-status" id="cccdScanStatus">Đang tìm chip NFC...</p>
                 <div class="cccd-fs-dots">
                     <span class="cccd-dot d1"></span>
                     <span class="cccd-dot d2"></span>
@@ -626,19 +618,26 @@
             </div>
         </div>
 
-        <!-- Success overlay -->
-        <div class="cccd-fs-success" id="cccdSuccessOverlay">
-            <div class="cccd-fs-success-inner">
-                <div class="cccd-fs-check-ring">
-                    <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
-                        <circle cx="36" cy="36" r="33" stroke="#00e676" stroke-width="3" fill="rgba(0,230,118,0.1)"/>
-                        <path d="M20 36 L30 47 L52 24" stroke="#00e676" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+        <!-- ══ PHASE 2: KẾT QUẢ ══ -->
+        <div class="cccd-phase" id="cccdPhaseResult" style="display:none">
+            <div class="cccd-result-wrap">
+                <!-- Header success -->
+                <div class="cccd-result-header">
+                    <div class="cccd-result-check">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <circle cx="20" cy="20" r="18" stroke="#00e676" stroke-width="2.5" fill="rgba(0,230,118,0.1)"/>
+                            <path d="M11 20 L17 27 L29 13" stroke="#00e676" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="cccd-result-title">Xác thực thành công</p>
+                        <p class="cccd-result-subtitle">CCCD gắn chip — Dữ liệu đã được mã hóa</p>
+                    </div>
                 </div>
-                <p class="cccd-fs-success-title">Quét thành công!</p>
-                <p class="cccd-fs-success-sub" id="cccdSuccessName"></p>
-                <p class="cccd-fs-success-sub2" id="cccdSuccessId"></p>
-                <p class="cccd-fs-success-redirect">Đang chuyển về trang chủ...</p>
+                <!-- Info fields -->
+                <div class="cccd-result-body" id="cccdResultBody"></div>
+                <!-- Footer note -->
+                <p class="cccd-result-note" id="cccdResultNote">Đang chuyển về trang chủ...</p>
             </div>
         </div>
     </div>
@@ -685,7 +684,7 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.94);
+            background: #0c0c0c;
             z-index: 99999;
             flex-direction: column;
             overflow: hidden;
@@ -698,10 +697,9 @@
             align-items: center;
             justify-content: space-between;
             padding: 13px 18px;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.55);
             border-bottom: 1px solid rgba(255,255,255,0.07);
             flex-shrink: 0;
-            z-index: 2;
         }
         .cccd-fs-topbar-left {
             display: flex;
@@ -727,12 +725,11 @@
             font-variant-numeric: tabular-nums;
         }
         .cccd-fs-timer.urgent {
-            background: #e74c3c;
             animation: cccdPulseRed 0.6s ease infinite alternate;
         }
         @keyframes cccdPulseRed {
             from { box-shadow: 0 0 0 3px rgba(231,76,60,0.35); }
-            to   { box-shadow: 0 0 0 9px rgba(231,76,60,0.0); }
+            to   { box-shadow: 0 0 0 9px rgba(231,76,60,0); }
         }
         .cccd-fs-close {
             background: rgba(255,255,255,0.11);
@@ -750,179 +747,183 @@
         }
         .cccd-fs-close:hover { background: rgba(255,255,255,0.22); }
 
-        /* Body — centers the frame */
-        .cccd-fs-body {
+        /* Phase wrapper */
+        .cccd-phase {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 22px;
-            position: relative;
+            padding: 20px 16px;
+            overflow-y: auto;
         }
         .cccd-fs-guide {
-            color: rgba(255,255,255,0.78);
-            font-size: 13px;
+            color: rgba(255,255,255,0.75);
+            font-size: 13.5px;
             text-align: center;
             margin: 0;
-            padding: 0 24px;
-            letter-spacing: 0.2px;
+            padding: 0 8px;
         }
 
-        /* Portrait frame — vertical card, centered */
+        /* Portrait frame */
         .cccd-fs-frame {
             position: relative;
             width: 210px;
             height: 332px;
             border-radius: 12px;
             overflow: hidden;
-            background: rgba(255,255,255,0.03);
-            /* box-shadow creates the dark vignette around the frame */
-            box-shadow:
-                0 0 0 2000px rgba(0,0,0,0.78),
-                0 0 40px 6px rgba(0,229,255,0.08) inset;
+            background: rgba(255,255,255,0.025);
+            box-shadow: 0 0 0 2000px rgba(0,0,0,0.72), 0 0 30px 4px rgba(0,229,255,0.06) inset;
             flex-shrink: 0;
         }
+        .cccd-frame-idle { box-shadow: 0 0 0 2000px rgba(0,0,0,0.72), 0 0 0 0 transparent; }
 
         /* Corner brackets */
-        .cccd-corner {
-            position: absolute;
-            width: 26px;
-            height: 26px;
-            z-index: 5;
-        }
-        .cccd-corner.tl { top: -1px; left: -1px; border-top: 3.5px solid #00e5ff; border-left: 3.5px solid #00e5ff; border-radius: 12px 0 0 0; }
-        .cccd-corner.tr { top: -1px; right: -1px; border-top: 3.5px solid #00e5ff; border-right: 3.5px solid #00e5ff; border-radius: 0 12px 0 0; }
-        .cccd-corner.bl { bottom: -1px; left: -1px; border-bottom: 3.5px solid #00e5ff; border-left: 3.5px solid #00e5ff; border-radius: 0 0 0 12px; }
-        .cccd-corner.br { bottom: -1px; right: -1px; border-bottom: 3.5px solid #00e5ff; border-right: 3.5px solid #00e5ff; border-radius: 0 0 12px 0; }
+        .cccd-corner { position: absolute; width: 26px; height: 26px; z-index: 5; }
+        .cccd-corner.tl { top:-1px; left:-1px; border-top:3.5px solid #00e5ff; border-left:3.5px solid #00e5ff; border-radius:12px 0 0 0; }
+        .cccd-corner.tr { top:-1px; right:-1px; border-top:3.5px solid #00e5ff; border-right:3.5px solid #00e5ff; border-radius:0 12px 0 0; }
+        .cccd-corner.bl { bottom:-1px; left:-1px; border-bottom:3.5px solid #00e5ff; border-left:3.5px solid #00e5ff; border-radius:0 0 0 12px; }
+        .cccd-corner.br { bottom:-1px; right:-1px; border-bottom:3.5px solid #00e5ff; border-right:3.5px solid #00e5ff; border-radius:0 0 12px 0; }
+        .cccd-frame-idle .cccd-corner { border-color: rgba(255,255,255,0.3); }
 
-        /* Horizontal scan line moving top → bottom */
+        /* Scan line */
         .cccd-scanline {
-            position: absolute;
-            left: 0;
-            right: 0;
-            height: 2.5px;
-            background: linear-gradient(90deg, transparent 0%, #00e5ff 25%, #ffffff 50%, #00e5ff 75%, transparent 100%);
+            position: absolute; left:0; right:0; height:2.5px;
+            background: linear-gradient(90deg, transparent 0%, #00e5ff 25%, #fff 50%, #00e5ff 75%, transparent 100%);
             box-shadow: 0 0 14px 4px rgba(0,229,255,0.5);
-            top: 0;
-            z-index: 4;
+            top: 0; z-index: 4;
             animation: cccdScanMove 2s ease-in-out infinite;
         }
         @keyframes cccdScanMove {
-            0%   { top: 0; }
-            50%  { top: calc(100% - 2.5px); }
-            100% { top: 0; }
+            0%  { top:0; }
+            50% { top:calc(100% - 2.5px); }
+            100%{ top:0; }
         }
 
-        /* Portrait card ghost */
-        .cccd-card-ghost {
-            position: absolute;
-            inset: 0;
-            opacity: 1;
-            transition: opacity 0.6s;
-        }
-        .cccd-card-ghost.hidden { opacity: 0; }
+        /* Card ghost */
+        .cccd-card-ghost { position:absolute; inset:0; }
 
-        /* 30s progress ring — bottom-right of frame */
-        .cccd-prog-ring-wrap {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            z-index: 6;
-            opacity: 1;
-            transition: opacity 0.4s;
-        }
-        .cccd-prog-ring-wrap.hidden { opacity: 0; }
+        /* Progress ring */
+        .cccd-prog-ring-wrap { position:absolute; bottom:10px; right:10px; z-index:6; }
 
-        /* Status area */
-        .cccd-fs-status-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
+        /* Status dots */
+        .cccd-fs-status-area { display:flex; flex-direction:column; align-items:center; gap:10px; }
         .cccd-fs-status {
-            color: rgba(255,255,255,0.72);
-            font-size: 13px;
-            margin: 0;
-            text-align: center;
-            min-height: 20px;
-            transition: color 0.3s;
+            color: rgba(255,255,255,0.7); font-size:13px; margin:0;
+            text-align:center; min-height:20px; transition:color 0.3s;
         }
-        .cccd-fs-status.active { color: #00e5ff; }
-        .cccd-fs-dots { display: flex; gap: 7px; }
+        .cccd-fs-status.active { color:#00e5ff; }
+        .cccd-fs-dots { display:flex; gap:7px; }
         .cccd-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: rgba(0,229,255,0.45);
+            width:7px; height:7px; border-radius:50%;
+            background:rgba(0,229,255,0.45);
             animation: cccdDotPulse 1.2s ease-in-out infinite;
         }
-        .cccd-dot.d2 { animation-delay: 0.2s; }
-        .cccd-dot.d3 { animation-delay: 0.4s; }
+        .cccd-dot.d2 { animation-delay:0.2s; }
+        .cccd-dot.d3 { animation-delay:0.4s; }
         @keyframes cccdDotPulse {
-            0%, 100% { opacity: 0.25; transform: scale(0.8); }
-            50%      { opacity: 1;   transform: scale(1.25); }
+            0%,100% { opacity:0.25; transform:scale(0.8); }
+            50%     { opacity:1;   transform:scale(1.25); }
         }
 
-        /* Success overlay */
-        .cccd-fs-success {
-            display: none;
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.92);
-            z-index: 20;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-        .cccd-fs-success.show {
+        /* ── Nút Bắt đầu ── */
+        .cccd-btn-start {
             display: flex;
-            animation: cccdFadeIn 0.35s ease;
-        }
-        @keyframes cccdFadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to   { opacity: 1; transform: scale(1); }
-        }
-        .cccd-fs-success-inner {
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 12px;
-            text-align: center;
-            padding: 0 36px;
-        }
-        .cccd-fs-check-ring {
-            animation: cccdCheckPop 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
-        }
-        @keyframes cccdCheckPop {
-            from { transform: scale(0); opacity: 0; }
-            to   { transform: scale(1); opacity: 1; }
-        }
-        .cccd-fs-success-title {
-            color: #00e676;
-            font-size: 24px;
-            font-weight: 800;
-            margin: 0;
-        }
-        .cccd-fs-success-sub {
+            gap: 10px;
+            padding: 14px 36px;
+            background: linear-gradient(135deg, #CE7A58, #B8603A);
             color: #fff;
-            font-size: 15px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
             font-weight: 700;
-            margin: 0;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            box-shadow: 0 6px 20px rgba(160,80,40,0.45);
+            transition: transform 0.15s, box-shadow 0.15s;
         }
-        .cccd-fs-success-sub2 {
-            color: rgba(255,255,255,0.55);
-            font-size: 13px;
-            font-weight: 500;
-            margin: 0;
-            font-family: monospace;
+        .cccd-btn-start:hover  { transform:translateY(-2px); box-shadow:0 8px 24px rgba(160,80,40,0.6); }
+        .cccd-btn-start:active { transform:translateY(0); }
+
+        /* ── Màn hình kết quả ── */
+        .cccd-result-wrap {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            animation: cccdResultIn 0.4s cubic-bezier(0.22,1,0.36,1);
         }
-        .cccd-fs-success-redirect {
-            color: rgba(255,255,255,0.42);
+        @keyframes cccdResultIn {
+            from { opacity:0; transform:translateY(22px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+        .cccd-result-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 20px;
+            background: rgba(0,230,118,0.08);
+            border: 1px solid rgba(0,230,118,0.2);
+            border-radius: 14px 14px 0 0;
+        }
+        .cccd-result-check { flex-shrink:0; }
+        .cccd-result-title {
+            color: #00e676; font-size:16px; font-weight:800; margin:0;
+        }
+        .cccd-result-subtitle {
+            color: rgba(255,255,255,0.45); font-size:11px; margin:4px 0 0;
+        }
+        .cccd-result-body {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-top: none;
+            padding: 4px 0;
+        }
+        .cccd-rf {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            padding: 9px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .cccd-rf:last-child { border-bottom: none; }
+        .cccd-rf-label {
+            flex-shrink: 0;
+            width: 110px;
+            color: rgba(255,255,255,0.4);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .cccd-rf-val {
+            flex: 1;
+            color: #fff;
+            font-size: 13.5px;
+            font-weight: 600;
+            word-break: break-word;
+        }
+        .cccd-rf-val.mono { font-family:monospace; letter-spacing:0.5px; color:#00e5ff; }
+        .cccd-result-note {
+            text-align: center;
+            color: rgba(255,255,255,0.35);
             font-size: 12px;
             margin: 0;
-            margin-top: 4px;
+            padding: 14px 20px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-top: none;
+            border-radius: 0 0 14px 14px;
+        }
+        /* Fade out animation */
+        .cccd-fade-out {
+            animation: cccdFadeOutAll 0.6s ease forwards;
+        }
+        @keyframes cccdFadeOutAll {
+            from { opacity:1; }
+            to   { opacity:0; }
         }
     </style>
 

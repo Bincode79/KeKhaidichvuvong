@@ -1,26 +1,24 @@
-// ===== CCCD CHIP SCANNER SIMULATION =====
-// Quét dọc 30s, đếm ngược 50s, tự về trang chủ
+// ===== CCCD CHIP SCANNER — 3-phase flow =====
+// Phase 0: Ready (nút Bắt đầu)
+// Phase 1: Scanning 30s (countdown 50s)
+// Phase 2: Kết quả → fade out → về trang chủ
 
-var _cccdData = null;
-var _scanTimer = null;
-var _countdownTimer = null;
-var _secondsLeft = 50;
-var _scanSeconds = 30;
+var _cccdData   = null;
+var _scanTimer  = null;
+var _cdTimer    = null;
+var _secsLeft   = 50;
 var _scanElapsed = 0;
 
-// Dữ liệu giả lập
-var _hoNam = ['Nguyễn','Trần','Lê','Phạm','Hoàng','Phan','Vũ','Đặng','Bùi','Đỗ','Hồ','Ngô','Dương','Lý'];
-var _tenDemNam = ['Văn','Hữu','Đức','Minh','Thanh','Quốc','Trung','Bá','Công','Xuân','Tuấn'];
-var _tenNam = ['An','Bình','Cường','Dũng','Hùng','Khoa','Long','Mạnh','Nam','Phúc','Quân','Sơn','Thắng','Tú','Vinh'];
-var _hoNu = ['Nguyễn','Trần','Lê','Phạm','Hoàng','Phan'];
-var _tenDemNu = ['Thị','Ngọc','Kim','Thu','Bích','Hồng','Lan','Mai','Hà','Phương'];
-var _tenNu = ['Anh','Chi','Dung','Hằng','Hoa','Huệ','Linh','Liên','Mai','Nga','Nhung','Oanh','Thanh','Thảo','Trang','Trinh','Vân','Yến'];
-var _tinh = ['Hà Nội','TP. Hồ Chí Minh','Đà Nẵng','Hải Phòng','Cần Thơ','An Giang','Bà Rịa - Vũng Tàu','Bắc Giang','Bắc Ninh','Bến Tre','Bình Định','Bình Dương','Đắk Lắk','Đồng Nai','Gia Lai','Hà Tĩnh','Hải Dương','Hưng Yên','Khánh Hòa','Kiên Giang','Lâm Đồng','Lạng Sơn','Lào Cai','Long An','Nam Định','Nghệ An','Ninh Bình','Phú Thọ','Quảng Bình','Quảng Nam','Quảng Ngãi','Quảng Ninh','Thanh Hóa','Thừa Thiên Huế','Tiền Giang','Vĩnh Long','Vĩnh Phúc','Yên Bái'];
-var _duong = ['Đường Láng','Nguyễn Trãi','Lê Lợi','Trần Hưng Đạo','Hoàng Hoa Thám','Đinh Tiên Hoàng','Nguyễn Huệ','Hai Bà Trưng','Phan Đình Phùng','Ngô Quyền','Cách Mạng Tháng 8','Nguyễn Văn Cừ','Tôn Đức Thắng'];
-var _phuong = ['Phường 1','Phường 3','Phường 5','Phường 7','Phường Bến Nghé','Phường Đông Khê','Phường Lê Lợi','Phường Trần Hưng Đạo','Phường Hàng Bạc','Phường Tràng Tiền'];
-var _quan = ['Quận 1','Quận 3','Quận Hoàn Kiếm','Quận Hai Bà Trưng','Quận Đống Đa','Quận Bình Thạnh','Quận Tân Bình','Quận Hải Châu'];
-
-var _scanMessages = [
+// ── Dữ liệu giả lập ──
+var _HO_NAM  = ['Nguyễn','Trần','Lê','Phạm','Hoàng','Phan','Vũ','Đặng','Bùi','Đỗ','Hồ','Ngô'];
+var _TEN_NAM = ['Văn An','Hữu Bình','Đức Cường','Minh Dũng','Quốc Hùng','Trung Khoa','Xuân Long','Công Mạnh','Tuấn Nam','Bá Phúc'];
+var _HO_NU   = ['Nguyễn','Trần','Lê','Phạm','Hoàng','Phan'];
+var _TEN_NU  = ['Thị Anh','Ngọc Chi','Kim Dung','Thu Hằng','Bích Hoa','Lan Huệ','Mai Linh','Hồng Nga','Phương Nhung','Thị Oanh'];
+var _TINH    = ['Hà Nội','TP. Hồ Chí Minh','Đà Nẵng','Hải Phòng','Cần Thơ','Nghệ An','Thanh Hóa','Bình Dương','Đồng Nai','Khánh Hòa','Quảng Nam','Thừa Thiên Huế','Lâm Đồng','Kiên Giang','An Giang'];
+var _DUONG   = ['Đường Láng','Nguyễn Trãi','Lê Lợi','Trần Hưng Đạo','Hoàng Hoa Thám','Đinh Tiên Hoàng','Nguyễn Huệ','Hai Bà Trưng','Nguyễn Văn Cừ','Tôn Đức Thắng','Cách Mạng Tháng 8','Phan Đình Phùng'];
+var _PHUONG  = ['Phường 1','Phường 3','Phường 5','Phường Bến Nghé','Phường Đông Khê','Phường Lê Lợi','Phường Hàng Bạc','Phường Tràng Tiền','Phường Hải Châu'];
+var _QUAN    = ['Quận 1','Quận 3','Quận Hoàn Kiếm','Quận Hai Bà Trưng','Quận Đống Đa','Quận Bình Thạnh','Quận Tân Bình','Quận Hải Châu'];
+var _MSGS    = [
     'Đang tìm chip NFC trên thẻ...',
     'Phát hiện tín hiệu chip...',
     'Kết nối chip CCCD...',
@@ -32,217 +30,214 @@ var _scanMessages = [
     'Hoàn tất xác thực chip...'
 ];
 
-function rnd(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-function rndInt(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; }
-function pad(n) { return String(n).padStart(2, '0'); }
+function _rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
+function _rndInt(a,b) { return Math.floor(Math.random()*(b-a+1))+a; }
+function _pad(n) { return String(n).padStart(2,'0'); }
 
-function genCCCDNumber() {
-    var prefix = ['001','002','004','048','079','260','274','292'];
-    return rnd(prefix) + String(rndInt(0,1)) + String(rndInt(0,9)) + String(rndInt(100000,999999));
+function _genCCCD() {
+    var pre = ['001','002','004','048','079','260','274','292'];
+    return _rnd(pre) + _rndInt(0,1) + _rndInt(0,9) + String(_rndInt(100000,999999));
 }
 
-function genFakeData() {
-    var isMale = Math.random() > 0.45;
-    var ho, tenDem, ten, gender;
-    if (isMale) {
-        ho = rnd(_hoNam); tenDem = rnd(_tenDemNam); ten = rnd(_tenNam); gender = 'Nam';
-    } else {
-        ho = rnd(_hoNu); tenDem = rnd(_tenDemNu); ten = rnd(_tenNu); gender = 'Nữ';
-    }
-    var fullName = (ho + ' ' + tenDem + ' ' + ten).toUpperCase();
-    var dobYear = rndInt(1960, 2005);
-    var dobMonth = rndInt(1, 12);
-    var dobDay = rndInt(1, 28);
-    var dob = pad(dobDay) + '/' + pad(dobMonth) + '/' + dobYear;
-    var issueYear = rndInt(Math.max(dobYear + 14, 2021), 2024);
-    var issueMonth = rndInt(1, 12);
-    var issueDay = rndInt(1, 28);
-    var issueDate = pad(issueDay) + '/' + pad(issueMonth) + '/' + issueYear;
-    var tinh = rnd(_tinh);
-    var address = rndInt(1, 350) + ' ' + rnd(_duong) + ', ' + rnd(_phuong) + ', ' + rnd(_quan) + ', ' + tinh;
+function _genData() {
+    var male = Math.random() > 0.45;
+    var name = male ? (_rnd(_HO_NAM)+' '+_rnd(_TEN_NAM)) : (_rnd(_HO_NU)+' '+_rnd(_TEN_NU));
+    var doy  = _rndInt(1960,2005), dom = _rndInt(1,12), dod = _rndInt(1,28);
+    var dob  = _pad(dod)+'/'+_pad(dom)+'/'+doy;
+    var iy   = _rndInt(Math.max(doy+14,2021),2024);
+    var im   = _rndInt(1,12), iday = _rndInt(1,28);
+    var idate = _pad(iday)+'/'+_pad(im)+'/'+iy;
+    var tinh = _rnd(_TINH);
+    var addr = _rndInt(1,350)+' '+_rnd(_DUONG)+', '+_rnd(_PHUONG)+', '+_rnd(_QUAN)+', '+tinh;
     return {
-        id: genCCCDNumber(),
-        name: fullName,
+        id: _genCCCD(),
+        name: name.toUpperCase(),
         dob: dob,
-        gender: gender,
+        gender: male ? 'Nam' : 'Nữ',
         nation: 'Việt Nam',
         hometown: tinh,
-        address: address,
-        issueDate: issueDate,
-        expireDate: dobYear <= 1993 ? 'Không thời hạn' : pad(issueDay) + '/' + pad(issueMonth) + '/' + (issueYear + 25),
-        issuePlace: 'CỤC CẢNH SÁT QUẢN LÝ HÀNH CHÍNH VỀ TRẬT TỰ XÃ HỘI'
+        address: addr,
+        issueDate: idate,
+        expiry: doy <= 1993 ? 'Không thời hạn' : _pad(iday)+'/'+_pad(im)+'/'+(iy+25),
+        issueBy: 'Cục Cảnh sát quản lý hành chính về trật tự xã hội'
     };
 }
 
-// ===== OPEN / CLOSE =====
+// ── Helpers ──
+function _el(id)  { return document.getElementById(id); }
+function _show(id, flex) { var e=_el(id); if(e){ e.style.display = flex ? 'flex' : 'block'; } }
+function _hide(id) { var e=_el(id); if(e) e.style.display='none'; }
+
+// ── Open / Close ──
 function openCCCDScanner(e) {
     if (e) e.preventDefault();
-    var overlay = document.getElementById('cccdModal');
-    if (!overlay) return;
-    overlay.classList.add('open');
+    var m = _el('cccdModal');
+    if (!m) return;
+    m.classList.add('open');
     document.body.style.overflow = 'hidden';
-    _startScan();
+    _resetAll();
+    _showPhase('ready');
 }
 
 function closeCCCDScanner() {
-    _clearAll();
-    var overlay = document.getElementById('cccdModal');
-    if (overlay) overlay.classList.remove('open');
+    _clearTimers();
+    var m = _el('cccdModal');
+    if (m) m.classList.remove('open');
     document.body.style.overflow = '';
-    _resetUI();
 }
 
-function _clearAll() {
+function _clearTimers() {
     if (_scanTimer) { clearInterval(_scanTimer); _scanTimer = null; }
-    if (_countdownTimer) { clearInterval(_countdownTimer); _countdownTimer = null; }
+    if (_cdTimer)   { clearInterval(_cdTimer);   _cdTimer   = null; }
 }
 
-function _resetUI() {
-    _secondsLeft = 50;
+function _resetAll() {
+    _clearTimers();
+    _cccdData    = null;
+    _secsLeft    = 50;
     _scanElapsed = 0;
-    _cccdData = null;
+}
 
-    var el = function(id) { return document.getElementById(id); };
+function _showPhase(phase) {
+    _hide('cccdPhaseReady');
+    _hide('cccdPhaseScanning');
+    _hide('cccdPhaseResult');
+    _hide('cccdCountdown');
 
-    if (el('cccdCountdown')) { el('cccdCountdown').textContent = '50'; el('cccdCountdown').classList.remove('urgent'); }
-    if (el('cccdGuideText')) el('cccdGuideText').textContent = 'Đặt thẻ CCCD dọc vào khung và giữ yên 30 giây';
-    if (el('cccdScanStatus')) { el('cccdScanStatus').textContent = 'Đang tìm chip NFC trên thẻ...'; el('cccdScanStatus').classList.remove('active'); }
-    if (el('cccdCardGhost')) el('cccdCardGhost').classList.remove('hidden');
-    if (el('cccdSuccessOverlay')) el('cccdSuccessOverlay').classList.remove('show');
-    if (el('cccdProgRing')) el('cccdProgRing').classList.remove('hidden');
-    if (el('cccdRingPath')) { el('cccdRingPath').style.strokeDashoffset = '150.8'; el('cccdRingPath').style.stroke = '#00e5ff'; }
-    if (el('cccdRingLabel')) el('cccdRingLabel').textContent = '30';
-    if (el('cccdScanLine')) {
-        el('cccdScanLine').style.animationPlayState = 'running';
-        el('cccdScanLine').style.background = 'linear-gradient(90deg, transparent 0%, #00e5ff 25%, #ffffff 50%, #00e5ff 75%, transparent 100%)';
-        el('cccdScanLine').style.boxShadow = '0 0 14px 4px rgba(0,229,255,0.5)';
+    if (phase === 'ready') {
+        _show('cccdPhaseReady', true);
+    } else if (phase === 'scanning') {
+        _show('cccdPhaseScanning', true);
+        _show('cccdCountdown', true);
+    } else if (phase === 'result') {
+        _show('cccdPhaseResult', true);
     }
-    // Reset corner colors
-    ['tl','tr','bl','br'].forEach(function(c) {
-        var el2 = document.querySelector('.cccd-corner.' + c);
-        if (el2) el2.style.borderColor = '';
-    });
 }
 
-// ===== MAIN SCAN =====
-function _startScan() {
-    _resetUI();
-    _secondsLeft = 50;
-    _scanElapsed = 0;
+// ── Phase 0 → Phase 1: Bắt đầu quét ──
+function cccdStartScan() {
+    _resetAll();
+    _showPhase('scanning');
 
-    var SCAN_TOTAL = 30; // 30 giây thu thập dữ liệu
-    var circumference = 150.8; // 2 * π * 24 ≈ 150.8
+    var TOTAL = 30;
+    var circ  = 150.8;
     var msgIdx = 0;
 
-    var el = function(id) { return document.getElementById(id); };
+    // Reset ring
+    var ring = _el('cccdRingPath');
+    if (ring) { ring.style.strokeDashoffset = circ; ring.style.stroke = '#00e5ff'; }
+    var lbl = _el('cccdRingLabel');
+    if (lbl) lbl.textContent = '30';
 
-    // --- Scan progress timer (mỗi 1 giây) ---
+    // Scan timer — mỗi giây
     _scanTimer = setInterval(function() {
         _scanElapsed++;
 
-        // Cập nhật vòng tròn tiến trình
-        var ratio = _scanElapsed / SCAN_TOTAL;
-        var offset = circumference * (1 - ratio);
-        if (el('cccdRingPath')) {
-            el('cccdRingPath').style.strokeDashoffset = offset.toFixed(1);
-        }
-        var remaining = SCAN_TOTAL - _scanElapsed;
-        if (el('cccdRingLabel')) el('cccdRingLabel').textContent = remaining > 0 ? remaining : 0;
+        // Ring progress
+        var ratio  = _scanElapsed / TOTAL;
+        var offset = circ * (1 - ratio);
+        if (ring) ring.style.strokeDashoffset = offset.toFixed(1);
+        if (lbl)  lbl.textContent = Math.max(TOTAL - _scanElapsed, 0);
 
-        // Cập nhật thông báo trạng thái
-        var newMsgIdx = Math.min(Math.floor(ratio * _scanMessages.length), _scanMessages.length - 1);
-        if (newMsgIdx !== msgIdx) {
-            msgIdx = newMsgIdx;
-            var statusEl = el('cccdScanStatus');
-            if (statusEl) {
-                statusEl.textContent = _scanMessages[msgIdx];
-                statusEl.classList.add('active');
-                setTimeout(function() { if (statusEl) statusEl.classList.remove('active'); }, 700);
+        // Status messages
+        var newIdx = Math.min(Math.floor(ratio * _MSGS.length), _MSGS.length - 1);
+        if (newIdx !== msgIdx) {
+            msgIdx = newIdx;
+            var st = _el('cccdScanStatus');
+            if (st) {
+                st.textContent = _MSGS[msgIdx];
+                st.classList.add('active');
+                setTimeout(function(){ if(st) st.classList.remove('active'); }, 700);
             }
         }
 
-        // Cập nhật guide text
-        if (_scanElapsed === 5 && el('cccdGuideText')) {
-            el('cccdGuideText').textContent = 'Giữ yên thẻ, đang đọc dữ liệu chip...';
-        }
-        if (_scanElapsed === 18 && el('cccdGuideText')) {
-            el('cccdGuideText').textContent = 'Đang xác thực thông tin trên chip...';
+        // Guide text updates
+        var g = _el('cccdGuideText');
+        if (g) {
+            if (_scanElapsed === 8)  g.textContent = 'Đang đọc dữ liệu chip — giữ yên thẻ...';
+            if (_scanElapsed === 18) g.textContent = 'Đang xác thực thông tin sinh trắc học...';
+            if (_scanElapsed === 26) g.textContent = 'Hoàn tất, đang mã hóa dữ liệu...';
         }
 
-        // Hoàn thành sau 30 giây
-        if (_scanElapsed >= SCAN_TOTAL) {
-            clearInterval(_scanTimer);
-            _scanTimer = null;
-            _onScanComplete();
+        // Hoàn thành sau 30s
+        if (_scanElapsed >= TOTAL) {
+            clearInterval(_scanTimer); _scanTimer = null;
+            _onScanDone();
         }
     }, 1000);
 
-    // --- Countdown 50 giây ---
-    _countdownTimer = setInterval(function() {
-        _secondsLeft--;
-        if (el('cccdCountdown')) {
-            el('cccdCountdown').textContent = _secondsLeft;
-            if (_secondsLeft <= 10) el('cccdCountdown').classList.add('urgent');
+    // Countdown 50s
+    _cdTimer = setInterval(function() {
+        _secsLeft--;
+        var cd = _el('cccdCountdown');
+        if (cd) {
+            cd.textContent = _secsLeft;
+            if (_secsLeft <= 10) cd.classList.add('urgent');
         }
-        if (_secondsLeft <= 0) {
-            clearInterval(_countdownTimer);
-            _countdownTimer = null;
+        if (_secsLeft <= 0) {
+            clearInterval(_cdTimer); _cdTimer = null;
             _returnHome();
         }
     }, 1000);
 }
 
-function _onScanComplete() {
-    _cccdData = genFakeData();
+// ── Phase 1 → Phase 2: Kết quả ──
+function _onScanDone() {
+    _cccdData = _genData();
 
-    // Chuyển màu góc sang xanh lá
-    var cornerColor = '#00e676';
-    ['tl','tr','bl','br'].forEach(function(c) {
-        var el2 = document.querySelector('.cccd-corner.' + c);
-        if (el2) el2.style.borderColor = cornerColor;
-    });
+    // Dừng countdown
+    if (_cdTimer) { clearInterval(_cdTimer); _cdTimer = null; }
 
-    // Hoàn thành ring (xanh lá, offset = 0)
-    var ringPath = document.getElementById('cccdRingPath');
-    if (ringPath) {
-        ringPath.style.stroke = '#00e676';
-        ringPath.style.strokeDashoffset = '0';
-    }
-    var ringLabel = document.getElementById('cccdRingLabel');
-    if (ringLabel) ringLabel.textContent = '✓';
+    // Chuyển ring sang xanh lá
+    var ring = _el('cccdRingPath');
+    if (ring) { ring.style.stroke = '#00e676'; ring.style.strokeDashoffset = '0'; }
+    var lbl = _el('cccdRingLabel');
+    if (lbl) lbl.textContent = '✓';
 
-    // Dừng scan line
-    var scanLine = document.getElementById('cccdScanLine');
-    if (scanLine) {
-        scanLine.style.animationPlayState = 'paused';
-        scanLine.style.background = 'linear-gradient(90deg, transparent 0%, #00e676 25%, #fff 50%, #00e676 75%, transparent 100%)';
-        scanLine.style.boxShadow = '0 0 14px 5px rgba(0,230,118,0.55)';
-    }
-
-    // Ẩn ghost
-    var ghost = document.getElementById('cccdCardGhost');
-    if (ghost) ghost.classList.add('hidden');
-
-    // Hiện success overlay sau 0.5s
+    // Sang phase kết quả sau 0.8s
     setTimeout(function() {
-        var nameEl = document.getElementById('cccdSuccessName');
-        if (nameEl) nameEl.textContent = _cccdData.name;
-        var idEl = document.getElementById('cccdSuccessId');
-        if (idEl) idEl.textContent = 'CCCD: ' + _cccdData.id;
-        var overlay = document.getElementById('cccdSuccessOverlay');
-        if (overlay) overlay.classList.add('show');
-    }, 500);
+        _buildResult(_cccdData);
+        _showPhase('result');
 
-    // Tự về trang chủ sau 20 giây (hoặc khi hết countdown 50s)
-    setTimeout(_returnHome, 20000);
+        // Sau 6s hiển thị thông tin → fade out → về trang chủ
+        setTimeout(function() {
+            var overlay = _el('cccdModal');
+            if (overlay) overlay.classList.add('cccd-fade-out');
+            setTimeout(_returnHome, 650);
+        }, 6000);
+    }, 800);
+}
+
+function _buildResult(d) {
+    var body = _el('cccdResultBody');
+    if (!body) return;
+    var fields = [
+        { label: 'Họ và tên',    val: d.name,      mono: false },
+        { label: 'Số CCCD',      val: d.id,         mono: true  },
+        { label: 'Ngày sinh',    val: d.dob,        mono: false },
+        { label: 'Giới tính',    val: d.gender,     mono: false },
+        { label: 'Quốc tịch',   val: d.nation,     mono: false },
+        { label: 'Quê quán',    val: d.hometown,   mono: false },
+        { label: 'Địa chỉ',     val: d.address,    mono: false },
+        { label: 'Ngày cấp',    val: d.issueDate,  mono: false },
+        { label: 'Có giá trị đến', val: d.expiry,  mono: false },
+    ];
+    body.innerHTML = fields.map(function(f) {
+        return '<div class="cccd-rf">'
+            + '<span class="cccd-rf-label">'+f.label+'</span>'
+            + '<span class="cccd-rf-val'+(f.mono?' mono':'')+'">'+f.val+'</span>'
+            + '</div>';
+    }).join('');
 }
 
 function _returnHome() {
     closeCCCDScanner();
+    var m = _el('cccdModal');
+    if (m) m.classList.remove('cccd-fade-out');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ===== KEYBOARD =====
+// Keyboard ESC
 document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') closeCCCDScanner();
