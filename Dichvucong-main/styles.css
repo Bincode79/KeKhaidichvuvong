@@ -549,7 +549,7 @@ body {
     position: relative;
     min-height: 0;
     padding: 20px 0 16px;
-    background-image: url("https://dichvucong.gov.vn/p/home/theme/img/home/banner.jpg");
+    background-image: url("https://vpcp.dichvucong.gov.vn/p/home/theme/img/home/banner.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -825,8 +825,8 @@ body {
 }
 
 .featured-service-btn {
-    background: rgba(255, 194, 81, 0.92);
-    color: #6b3b00;
+    background: #FFC251;
+    color: #000000;
     text-decoration: none;
     padding: 8px 16px;
     border-radius: 4px;
@@ -847,9 +847,9 @@ body {
 .featured-service-btn:hover {
     transform: translateY(-4px);
     box-shadow: none;
-    border-color: #FFB84D;
-    background: #FFB84D;
-    color: #5a2e00;
+    border-color: #FFB020;
+    background: #FFB020;
+    color: #000000;
 }
 
 .featured-service-icon {
@@ -871,7 +871,7 @@ body {
     font-size: 15px;
     font-weight: 600;
     line-height: 1.5;
-    color: #1E2F41;
+    color: #000000;
 }
 
 /* News Section */
