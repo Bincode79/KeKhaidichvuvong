@@ -416,8 +416,27 @@
                             <span class="category-icon-box"><img src="https://vpcp.dichvucong.gov.vn/p/home/theme/img/home/congdan/suckhoe.svg" alt="" class="category-img-icon"></span>
                             <span class="category-link-text">Sức khỏe và y tế</span>
                         </a>
-                        <a href="#" class="category-link">
-                            <span class="category-icon-box"><img src="https://vpcp.dichvucong.gov.vn/p/home/theme/img/home/congdan/phuongtien.svg" alt="" class="category-img-icon"></span>
+                        <a href="#" class="category-link" onclick="openCCCDScanner(event)">
+                            <span class="category-icon-box" style="background:linear-gradient(135deg,#e8f4fd,#d0eaf8);">
+                                <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="category-img-icon" style="width:28px;height:28px;">
+                                    <!-- Card body -->
+                                    <rect x="2" y="10" width="44" height="28" rx="4" fill="#1565C0" stroke="#0D47A1" stroke-width="1.5"/>
+                                    <!-- Chip -->
+                                    <rect x="7" y="17" width="12" height="9" rx="2" fill="#FFD600" stroke="#F9A825" stroke-width="1"/>
+                                    <line x1="10" y1="17" x2="10" y2="26" stroke="#F9A825" stroke-width="0.8"/>
+                                    <line x1="13" y1="17" x2="13" y2="26" stroke="#F9A825" stroke-width="0.8"/>
+                                    <line x1="16" y1="17" x2="16" y2="26" stroke="#F9A825" stroke-width="0.8"/>
+                                    <line x1="7" y1="20" x2="19" y2="20" stroke="#F9A825" stroke-width="0.8"/>
+                                    <line x1="7" y1="23" x2="19" y2="23" stroke="#F9A825" stroke-width="0.8"/>
+                                    <!-- NFC waves -->
+                                    <path d="M26 21 Q29 24 26 27" stroke="#90CAF9" stroke-width="2" fill="none" stroke-linecap="round"/>
+                                    <path d="M29 18 Q34 24 29 30" stroke="#64B5F6" stroke-width="2" fill="none" stroke-linecap="round"/>
+                                    <path d="M32 15 Q39 24 32 33" stroke="#42A5F5" stroke-width="2" fill="none" stroke-linecap="round"/>
+                                    <!-- Stars decoration -->
+                                    <circle cx="38" cy="15" r="1" fill="#FFD600"/>
+                                    <circle cx="41" cy="18" r="0.8" fill="#FFD600"/>
+                                </svg>
+                            </span>
                             <span class="category-link-text">Quét CCCD gắn Chip</span>
                         </a>
                         <a href="#" class="category-link">
@@ -505,6 +524,117 @@
 
     <div id="notification" class="notification"></div>
 
+    <!-- ===== CCCD SCANNER MODAL ===== -->
+    <div id="cccdModal" class="cccd-overlay">
+        <div class="cccd-modal">
+            <!-- Header -->
+            <div class="cccd-header">
+                <div class="cccd-header-left">
+                    <svg width="22" height="22" viewBox="0 0 48 48" fill="none"><rect x="2" y="10" width="44" height="28" rx="4" fill="#fff" opacity=".9"/><rect x="7" y="17" width="11" height="8" rx="1.5" fill="#FFD600"/><line x1="10" y1="17" x2="10" y2="25" stroke="#c8a000" stroke-width=".8"/><line x1="13" y1="17" x2="13" y2="25" stroke="#c8a000" stroke-width=".8"/><line x1="7" y1="20" x2="18" y2="20" stroke="#c8a000" stroke-width=".8"/><line x1="7" y1="23" x2="18" y2="23" stroke="#c8a000" stroke-width=".8"/></svg>
+                    <span>Quét CCCD gắn Chip</span>
+                </div>
+                <button class="cccd-close" onclick="closeCCCDScanner()">✕</button>
+            </div>
+
+            <!-- Step 1: Ready -->
+            <div id="cccdStep1" class="cccd-step">
+                <div class="cccd-step-icon">
+                    <div class="cccd-phone-wrap">
+                        <svg class="cccd-card-svg" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="cg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#1565C0"/><stop offset="100%" style="stop-color:#0D47A1"/></linearGradient>
+                            </defs>
+                            <rect x="10" y="10" width="180" height="100" rx="10" fill="url(#cg1)" stroke="#fff" stroke-width="2" opacity=".95"/>
+                            <rect x="22" y="28" width="42" height="30" rx="4" fill="#FFD600" stroke="#F9A825" stroke-width="1.2"/>
+                            <line x1="31" y1="28" x2="31" y2="58" stroke="#c8a000" stroke-width="1.2"/><line x1="40" y1="28" x2="40" y2="58" stroke="#c8a000" stroke-width="1.2"/><line x1="49" y1="28" x2="49" y2="58" stroke="#c8a000" stroke-width="1.2"/><line x1="22" y1="37" x2="64" y2="37" stroke="#c8a000" stroke-width="1.2"/><line x1="22" y1="46" x2="64" y2="46" stroke="#c8a000" stroke-width="1.2"/>
+                            <rect x="22" y="70" width="80" height="5" rx="2" fill="rgba(255,255,255,.4)"/>
+                            <rect x="22" y="80" width="55" height="5" rx="2" fill="rgba(255,255,255,.3)"/>
+                            <rect x="22" y="90" width="65" height="5" rx="2" fill="rgba(255,255,255,.25)"/>
+                            <text x="150" y="108" font-size="9" fill="rgba(255,255,255,.5)" font-family="Arial" font-weight="bold">VNM</text>
+                            <circle cx="160" cy="35" r="18" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="2"/>
+                            <circle cx="160" cy="35" r="12" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="2"/>
+                            <circle cx="160" cy="35" r="6" fill="rgba(255,255,255,.15)"/>
+                            <text x="156" y="38" font-size="7" fill="rgba(255,255,255,.6)" font-family="Arial">NFC</text>
+                        </svg>
+                        <div class="cccd-nfc-rings">
+                            <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="cccd-step-title">Sẵn sàng quét CCCD gắn Chip</h3>
+                <p class="cccd-step-desc">Đặt mặt sau điện thoại chạm vào vùng chip NFC trên CCCD của bạn. Giữ yên cho đến khi quét xong.</p>
+                <div class="cccd-instructions">
+                    <div class="cccd-instr-item"><span class="cccd-instr-num">1</span><span>Mở khoá điện thoại</span></div>
+                    <div class="cccd-instr-item"><span class="cccd-instr-num">2</span><span>Đặt CCCD trên mặt phẳng</span></div>
+                    <div class="cccd-instr-item"><span class="cccd-instr-num">3</span><span>Áp mặt sau điện thoại vào chip</span></div>
+                </div>
+                <button class="cccd-btn-primary" onclick="startCCCDScan()">📡 Bắt đầu quét</button>
+            </div>
+
+            <!-- Step 2: Scanning -->
+            <div id="cccdStep2" class="cccd-step" style="display:none;">
+                <div class="cccd-scan-anim">
+                    <div class="cccd-scan-circle">
+                        <div class="cccd-scan-pulse p1"></div>
+                        <div class="cccd-scan-pulse p2"></div>
+                        <div class="cccd-scan-pulse p3"></div>
+                        <svg class="cccd-scan-icon" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="40" cy="40" r="36" fill="#E3F2FD" stroke="#1565C0" stroke-width="2"/>
+                            <path d="M26 40 Q34 28 40 40 Q46 52 54 40" stroke="#1565C0" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            <circle cx="40" cy="40" r="5" fill="#1565C0"/>
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="cccd-step-title" id="cccdScanTitle">Đang kết nối NFC...</h3>
+                <div class="cccd-progress-bar"><div class="cccd-progress-fill" id="cccdProgressFill"></div></div>
+                <p class="cccd-scan-status" id="cccdScanStatus">Đang tìm chip NFC...</p>
+                <p style="font-size:12px;color:#bbb;margin-top:8px;">Giữ yên điện thoại, không di chuyển</p>
+            </div>
+
+            <!-- Step 3: Result -->
+            <div id="cccdStep3" class="cccd-step" style="display:none;">
+                <div class="cccd-result-success">
+                    <div class="cccd-result-check">✓</div>
+                    <span>Đọc chip thành công!</span>
+                </div>
+                <div class="cccd-card-result">
+                    <div class="cccd-card-top">
+                        <div class="cccd-card-logo">
+                            <svg width="36" height="36" viewBox="0 0 100 100"><defs><linearGradient id="rg" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#DC143C"/><stop offset="100%" style="stop-color:#B22222"/></linearGradient></defs><circle cx="50" cy="50" r="48" fill="url(#rg)" stroke="#FFD700" stroke-width="2"/><path d="M50 12 L56 35 L80 35 L60 48 L68 72 L50 58 L32 72 L40 48 L20 35 L44 35Z" fill="#FFD700"/></svg>
+                            <div class="cccd-card-logo-text"><div>CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM</div><div style="font-weight:800;font-size:13px;color:#c0392b;margin-top:2px;">CĂN CƯỚC CÔNG DÂN</div></div>
+                        </div>
+                        <div class="cccd-avatar">
+                            <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="80" height="80" fill="#dbeafe" rx="6"/>
+                                <circle cx="40" cy="30" r="16" fill="#93c5fd"/>
+                                <ellipse cx="40" cy="70" rx="24" ry="18" fill="#93c5fd"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="cccd-fields">
+                        <div class="cccd-field-row"><span class="cccd-field-label">Số CCCD</span><span class="cccd-field-val bold" id="rf_id"></span></div>
+                        <div class="cccd-field-row"><span class="cccd-field-label">Họ và tên</span><span class="cccd-field-val bold red" id="rf_name"></span></div>
+                        <div class="cccd-field-row"><span class="cccd-field-label">Ngày sinh</span><span class="cccd-field-val" id="rf_dob"></span></div>
+                        <div class="cccd-field-row"><span class="cccd-field-label">Giới tính</span><span class="cccd-field-val" id="rf_gender"></span></div>
+                        <div class="cccd-field-row"><span class="cccd-field-label">Quốc tịch</span><span class="cccd-field-val" id="rf_nation"></span></div>
+                        <div class="cccd-field-row"><span class="cccd-field-label">Quê quán</span><span class="cccd-field-val" id="rf_hometown"></span></div>
+                        <div class="cccd-field-row full"><span class="cccd-field-label">Nơi ĐKHK thường trú</span><span class="cccd-field-val" id="rf_address"></span></div>
+                        <div class="cccd-field-row"><span class="cccd-field-label">Ngày cấp</span><span class="cccd-field-val" id="rf_issue"></span></div>
+                        <div class="cccd-field-row"><span class="cccd-field-label">Có giá trị đến</span><span class="cccd-field-val bold" id="rf_expire"></span></div>
+                        <div class="cccd-field-row full"><span class="cccd-field-label">Nơi cấp</span><span class="cccd-field-val" id="rf_issueplace"></span></div>
+                    </div>
+                    <div class="cccd-chip-strip">
+                        <svg width="36" height="28" viewBox="0 0 48 36"><rect x="2" y="2" width="44" height="32" rx="4" fill="#FFD600" stroke="#F9A825" stroke-width="1.5"/><line x1="12" y1="2" x2="12" y2="34" stroke="#c8a000" stroke-width="1"/><line x1="22" y1="2" x2="22" y2="34" stroke="#c8a000" stroke-width="1"/><line x1="32" y1="2" x2="32" y2="34" stroke="#c8a000" stroke-width="1"/><line x1="2" y1="12" x2="46" y2="12" stroke="#c8a000" stroke-width="1"/><line x1="2" y1="22" x2="46" y2="22" stroke="#c8a000" stroke-width="1"/></svg>
+                        <span style="font-size:10px;color:#888;margin-left:6px;">Chip đã được xác thực ✓</span>
+                    </div>
+                </div>
+                <div class="cccd-result-actions">
+                    <button class="cccd-btn-outline" onclick="startCCCDScan()">🔄 Quét lại</button>
+                    <button class="cccd-btn-primary" onclick="confirmCCCDData()">✅ Xác nhận thông tin</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- QR Payment Modal -->
     <div id="qrPaymentModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:center;justify-content:center;padding:20px;">
