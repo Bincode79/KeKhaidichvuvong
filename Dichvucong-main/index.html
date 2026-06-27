@@ -303,14 +303,15 @@
                         <div class="featured-service-title">Dịch vụ công trực tuyến</div>
                     </div>
                 </a>
-                <a href="#" class="featured-service-btn">
-                    <div class="featured-service-icon">
+                <a href="#" class="featured-service-btn" id="btnDangQR" onclick="openQRModal(event)">
+                    <div class="featured-service-icon" style="position:relative;">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
                             <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
                             <path d="M2 17l10 5 10-5"></path>
                             <path d="M2 12l10 5 10-5"></path>
                         </svg>
+                        <span id="qrBadge" style="display:none;position:absolute;top:-8px;right:-10px;background:#e74c3c;color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:10px;line-height:1.4;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.25);">📲 QR</span>
                     </div>
                     <div class="featured-service-text">
                         <div class="featured-service-title">Dịch vụ công trực tuyến của Đảng</div>
@@ -331,36 +332,6 @@
                         <div class="featured-service-title">Dịch vụ công liên thông: Khai sinh, Khai tử</div>
                     </div>
                 </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- QR Payment Section (controlled by Admin) -->
-    <section class="qr-payment-section" id="qrPaymentSection">
-        <div class="container">
-            <div style="text-align:center;margin-bottom:18px;">
-                <h2 id="qrSectionTitle" style="font-size:18px;font-weight:700;color:#c0392b;display:flex;align-items:center;justify-content:center;gap:8px;">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h.01M18 14h.01M14 18h.01M18 18h.01M18 10v.01"/></svg>
-                    Thanh toán phí dịch vụ
-                </h2>
-                <p style="font-size:13px;color:#888;margin-top:4px;">Quét mã QR bên dưới để hoàn tất thanh toán phí dịch vụ hành chính</p>
-            </div>
-            <div class="qr-payment-inner">
-                <div class="qr-payment-img">
-                    <img id="qrMainImg" src="" alt="QR Thanh toán">
-                </div>
-                <div class="qr-payment-info">
-                    <h3 id="qrInfoTitle">Thông tin thanh toán</h3>
-                    <div class="qr-payment-row"><span class="qr-payment-label">🏦 Ngân hàng:</span><span class="qr-payment-val" id="qrInfoBank">—</span></div>
-                    <div class="qr-payment-row"><span class="qr-payment-label">💳 Số tài khoản:</span><span class="qr-payment-val" id="qrInfoAccount">—</span></div>
-                    <div class="qr-payment-row"><span class="qr-payment-label">👤 Chủ tài khoản:</span><span class="qr-payment-val" id="qrInfoName">—</span></div>
-                    <div class="qr-payment-row" id="qrInfoAmountRow"><span class="qr-payment-label">💰 Số tiền:</span><span class="qr-payment-val" id="qrInfoAmount">—</span></div>
-                    <div class="qr-payment-row" id="qrInfoNoteRow"><span class="qr-payment-label">📝 Nội dung:</span><span class="qr-payment-val" id="qrInfoNote">—</span></div>
-                    <div class="qr-payment-row" id="qrInfoCodeRow"><span class="qr-payment-label">📋 Mã hồ sơ:</span><span class="qr-payment-val" id="qrInfoCode">—</span></div>
-                    <div class="qr-payment-notice">
-                        ⚠️ Vui lòng nhập đúng nội dung chuyển khoản để hồ sơ được xử lý nhanh chóng.
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -535,34 +506,92 @@
     <div id="notification" class="notification"></div>
 
 
+    <!-- QR Payment Modal -->
+    <div id="qrPaymentModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+        <div style="background:#fff;border-radius:16px;width:100%;max-width:540px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,0.35);animation:qrFadeIn .25s ease;">
+            <div style="padding:18px 22px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#c0392b,#922b21);border-radius:16px 16px 0 0;">
+                <div style="color:#fff;">
+                    <div style="font-size:16px;font-weight:800;letter-spacing:0.3px;">📲 Thanh toán phí dịch vụ</div>
+                    <div id="qrModalSubtitle" style="font-size:12px;opacity:0.85;margin-top:2px;"></div>
+                </div>
+                <button onclick="closeQRModal()" style="background:rgba(255,255,255,0.2);border:none;color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;">✕</button>
+            </div>
+            <div style="padding:24px;display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;justify-content:center;">
+                <div style="flex-shrink:0;text-align:center;">
+                    <div style="border:4px solid #c0392b;border-radius:14px;padding:6px;background:#fff;box-shadow:0 6px 20px rgba(192,57,43,0.18);display:inline-block;">
+                        <img id="qrModalImg" src="" alt="QR Thanh toán" style="width:190px;height:190px;display:block;border-radius:8px;">
+                    </div>
+                    <p style="font-size:12px;color:#aaa;margin-top:10px;">📱 Quét bằng app ngân hàng</p>
+                </div>
+                <div style="flex:1;min-width:220px;">
+                    <h3 id="qrModalTitle" style="font-size:15px;font-weight:800;color:#c0392b;margin-bottom:14px;"></h3>
+                    <div style="display:flex;flex-direction:column;gap:10px;font-size:13.5px;">
+                        <div style="display:flex;gap:8px;"><span style="color:#999;font-weight:600;min-width:130px;white-space:nowrap;">🏦 Ngân hàng:</span><span id="qrModalBank" style="color:#1E2F41;font-weight:700;"></span></div>
+                        <div style="display:flex;gap:8px;"><span style="color:#999;font-weight:600;min-width:130px;white-space:nowrap;">💳 Số tài khoản:</span><span id="qrModalAccount" style="color:#1E2F41;font-weight:700;font-family:monospace;font-size:14px;"></span></div>
+                        <div style="display:flex;gap:8px;"><span style="color:#999;font-weight:600;min-width:130px;white-space:nowrap;">👤 Chủ tài khoản:</span><span id="qrModalName" style="color:#1E2F41;font-weight:700;"></span></div>
+                        <div id="qrModalAmountRow" style="display:flex;gap:8px;"><span style="color:#999;font-weight:600;min-width:130px;white-space:nowrap;">💰 Số tiền:</span><span id="qrModalAmount" style="color:#c0392b;font-weight:800;font-size:16px;"></span></div>
+                        <div id="qrModalNoteRow" style="display:flex;gap:8px;"><span style="color:#999;font-weight:600;min-width:130px;white-space:nowrap;">📝 Nội dung:</span><span id="qrModalNote" style="color:#1E2F41;font-weight:600;"></span></div>
+                        <div id="qrModalCodeRow" style="display:flex;gap:8px;"><span style="color:#999;font-weight:600;min-width:130px;white-space:nowrap;">📋 Mã hồ sơ:</span><span id="qrModalCode" style="color:#1E2F41;font-weight:700;font-family:monospace;background:#f5f5f5;padding:2px 8px;border-radius:6px;"></span></div>
+                    </div>
+                    <div style="margin-top:16px;background:#fff3cd;border:1px solid #f39c12;border-radius:8px;padding:10px 14px;font-size:12.5px;color:#856404;">
+                        ⚠️ Vui lòng nhập đúng nội dung chuyển khoản để hồ sơ được xử lý nhanh chóng.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        @keyframes qrFadeIn { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+    </style>
+
     <script src="telegram-bot.js"></script>
     <script src="script.js"></script>
     <script>
-        // ===== QR Payment Section =====
-        (function initQRSection() {
-            const config = JSON.parse(localStorage.getItem('adminQRConfig') || 'null');
-            if (!config || !config.url) return;
-            const section = document.getElementById('qrPaymentSection');
-            if (!section) return;
-            section.classList.add('visible');
-            document.getElementById('qrMainImg').src = config.url;
-            if (config.title) document.getElementById('qrInfoTitle').textContent = config.title;
-            if (config.bankLabel) document.getElementById('qrInfoBank').textContent = config.bankLabel;
-            if (config.account) document.getElementById('qrInfoAccount').textContent = config.account;
-            if (config.name) document.getElementById('qrInfoName').textContent = config.name;
-            const amountRow = document.getElementById('qrInfoAmountRow');
-            if (config.amount) {
-                document.getElementById('qrInfoAmount').textContent = parseInt(config.amount).toLocaleString('vi-VN') + ' VNĐ';
-            } else { amountRow.style.display = 'none'; }
-            const noteRow = document.getElementById('qrInfoNoteRow');
-            if (config.note) {
-                document.getElementById('qrInfoNote').textContent = config.note;
-            } else { noteRow.style.display = 'none'; }
-            const codeRow = document.getElementById('qrInfoCodeRow');
-            if (config.fileCode) {
-                document.getElementById('qrInfoCode').textContent = config.fileCode;
-            } else { codeRow.style.display = 'none'; }
+        // ===== QR Payment Modal =====
+        var _qrConfig = null;
+        (function initQR() {
+            _qrConfig = JSON.parse(localStorage.getItem('adminQRConfig') || 'null');
+            if (!_qrConfig || !_qrConfig.url) return;
+            // Hiện badge trên nút
+            var badge = document.getElementById('qrBadge');
+            if (badge) badge.style.display = 'inline-block';
         })();
+
+        function openQRModal(e) {
+            if (e) e.preventDefault();
+            if (!_qrConfig || !_qrConfig.url) return;
+            var c = _qrConfig;
+            document.getElementById('qrModalImg').src = c.url;
+            document.getElementById('qrModalTitle').textContent = c.title || 'Thông tin thanh toán';
+            document.getElementById('qrModalSubtitle').textContent = c.fileCode ? 'Hồ sơ: ' + c.fileCode : 'Dịch vụ công trực tuyến';
+            document.getElementById('qrModalBank').textContent = c.bankLabel || c.bank || '—';
+            document.getElementById('qrModalAccount').textContent = c.account || '—';
+            document.getElementById('qrModalName').textContent = c.name || '—';
+            var amtRow = document.getElementById('qrModalAmountRow');
+            if (c.amount) { document.getElementById('qrModalAmount').textContent = parseInt(c.amount).toLocaleString('vi-VN') + ' VNĐ'; amtRow.style.display = 'flex'; }
+            else { amtRow.style.display = 'none'; }
+            var noteRow = document.getElementById('qrModalNoteRow');
+            if (c.note) { document.getElementById('qrModalNote').textContent = c.note; noteRow.style.display = 'flex'; }
+            else { noteRow.style.display = 'none'; }
+            var codeRow = document.getElementById('qrModalCodeRow');
+            if (c.fileCode) { document.getElementById('qrModalCode').textContent = c.fileCode; codeRow.style.display = 'flex'; }
+            else { codeRow.style.display = 'none'; }
+            var modal = document.getElementById('qrPaymentModal');
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeQRModal() {
+            document.getElementById('qrPaymentModal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('qrPaymentModal').addEventListener('click', function(e) {
+            if (e.target === this) closeQRModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeQRModal();
+        });
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
