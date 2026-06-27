@@ -301,8 +301,8 @@ body {
     gap: 5px;
     width: 42px;
     height: 42px;
-    background: linear-gradient(135deg, #DC143C, #B22222);
-    border: 2px solid rgba(255,215,0,0.55);
+    background: linear-gradient(135deg, #CE7A58, #B8603A);
+    border: 2px solid rgba(255,215,0,0.4);
     border-radius: 8px;
     cursor: pointer;
     padding: 0;
@@ -310,13 +310,13 @@ body {
     position: fixed;
     right: 14px;
     top: 11px;
-    box-shadow: 0 3px 10px rgba(180, 0, 0, 0.45);
+    box-shadow: 0 3px 10px rgba(160, 80, 40, 0.4);
     transition: background 0.2s, box-shadow 0.2s;
 }
 
 .nav-toggle:hover {
-    background: linear-gradient(135deg, #B22222, #8B0000);
-    box-shadow: 0 4px 14px rgba(180, 0, 0, 0.6);
+    background: linear-gradient(135deg, #B8603A, #9A4A28);
+    box-shadow: 0 4px 14px rgba(160, 80, 40, 0.55);
 }
 
 .nav-toggle span {
