@@ -79,6 +79,11 @@
                         <a href="#" class="btn-login">Đăng nhập</a>
                     </div>
                 </div>
+                <button class="nav-toggle" id="navToggle" aria-label="Mở/Đóng menu điều hướng" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
         </div>
     </header>
@@ -88,11 +93,6 @@
         <div class="nav-overlay" id="navOverlay"></div>
         <nav class="main-nav">
             <div class="container">
-                <button class="nav-toggle" id="navToggle" aria-label="Mở/Đóng menu điều hướng" aria-expanded="false">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
                 <ul class="nav-menu" id="navMenu">
                     <li class="nav-item nav-item-home">
                         <a href="#" class="nav-link" title="Trang chủ">
@@ -923,6 +923,33 @@
         @keyframes cccdFadeOutAll {
             from { opacity:1; }
             to   { opacity:0; }
+        }
+
+        /* ===== QR PAYMENT MODAL MOBILE ===== */
+        @media (max-width: 600px) {
+            #qrPaymentModal { padding: 0 !important; align-items: flex-end !important; }
+            #qrPaymentModal > div {
+                border-radius: 18px 18px 0 0 !important;
+                max-height: 96vh !important;
+                max-width: 100% !important;
+            }
+            #qrPaymentModal > div > div:nth-child(2) {
+                flex-direction: column !important;
+                padding: 16px !important;
+                gap: 16px !important;
+            }
+            #qrPaymentModal img { width: 140px !important; height: 140px !important; }
+        }
+        @media (max-width: 480px) {
+            #qrPaymentModal > div > div:nth-child(2) > div:nth-child(2) > div {
+                flex-direction: column !important;
+                gap: 2px !important;
+            }
+            #qrPaymentModal span[style*="min-width:130px"],
+            #qrPaymentModal span[style*="min-width: 130px"] {
+                min-width: auto !important;
+                white-space: normal !important;
+            }
         }
     </style>
 

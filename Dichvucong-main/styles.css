@@ -307,9 +307,7 @@ body {
     cursor: pointer;
     padding: 0;
     z-index: 1002;
-    position: fixed;
-    right: 14px;
-    top: 11px;
+    flex-shrink: 0;
     box-shadow: 0 3px 10px rgba(160, 80, 40, 0.4);
     transition: background 0.2s, box-shadow 0.2s;
 }
@@ -3270,30 +3268,32 @@ select.form-input {
 
 /* ==================== MOBILE OPTIMIZATIONS ==================== */
 
-/* Fix iOS background-attachment: fixed - không hỗ trợ trên iOS */
+/* Fix iOS background-attachment: fixed */
 @media (max-width: 968px) {
     .search-featured-section {
         background-attachment: scroll;
     }
 }
 
-/* ---- TABLET (481px - 968px): Logo + hamburger cùng 1 hàng ---- */
+/* ---- TABLET ≤968px: Header compact, logo + actions + hamburger cùng hàng ---- */
 @media (max-width: 968px) {
     .main-header {
         padding: 10px 0;
     }
 
+    /* Ghi đè rule cũ stacks header thành column */
     .header-content {
         flex-direction: row !important;
-        flex-wrap: nowrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 8px !important;
     }
 
     .logo-section {
         flex: 1;
         min-width: 0;
+        overflow: hidden;
     }
 
     .logo {
@@ -3320,23 +3320,16 @@ select.form-input {
     }
 
     .header-actions {
+        width: auto !important;
         flex-shrink: 0;
-        width: auto;
         justify-content: flex-end;
-        margin-left: 12px;
     }
 
-    /* Nav toggle - thay vì position:fixed, dùng relative trong header */
+    /* Nav toggle hiện trong header - không cần position:fixed nữa */
     .nav-toggle {
-        position: relative !important;
-        right: auto !important;
-        top: auto !important;
-        width: 40px;
-        height: 40px;
-        border-radius: 6px;
+        display: flex;
     }
 
-    /* Điều hướng: khoảng cách nav hợp lý */
     .main-nav {
         min-height: 44px;
     }
@@ -3440,17 +3433,16 @@ select.form-input {
         font-size: 14px;
     }
 
-    /* News section: 1 tin/hàng trên mobile */
-    .news-slide {
-        grid-template-columns: 1fr !important;
-        display: flex !important;
+    /* News section: active slide dạng cột trên mobile */
+    .news-slide.active {
+        display: flex;
         flex-direction: column;
     }
 
     .news-item {
         border-right: none !important;
         border-bottom: 1px solid #e9e0d8;
-        padding: 14px 16px;
+        padding: 12px 14px;
     }
 
     .news-item:last-child {

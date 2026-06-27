@@ -12,15 +12,58 @@
     <link rel="icon" type="image/png" href="https://vpcp.dichvucong.gov.vn/p/home/img/header/quoc_huy.png">
     <style>
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
+        /* Header mobile: logo + back-button cùng 1 hàng */
+        @media (max-width: 768px) {
+            .main-header { padding: 8px 0; }
+            .header-content {
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                gap: 8px !important;
             }
+            .logo-section { flex: 1; min-width: 0; overflow: hidden; }
+            .logo { max-height: 46px; }
+            .logo-emblem { width: 46px !important; height: 46px !important; }
+            .logo-main-text { font-size: 13px !important; }
+            .logo-tagline { display: none !important; }
+            .header-actions { width: auto !important; flex-shrink: 0; }
+            .btn-login { font-size: 13px !important; padding: 7px 12px !important; white-space: nowrap; }
+
+            /* Form area */
+            .appointment-section { margin: 16px auto !important; }
+            .section-card { padding: 16px !important; }
+            .section-card-header { padding: 14px 16px !important; }
+            .section-card-header h1 { font-size: 18px !important; }
+            .appointment-form { margin-top: 16px !important; }
+            .form-section { margin-bottom: 18px !important; padding: 14px !important; }
+            .form-section-title { font-size: 15px !important; margin-bottom: 14px !important; }
+            .form-group { margin-bottom: 12px !important; }
+            .form-input { padding: 9px 12px !important; font-size: 16px !important; }
+            .form-row { grid-template-columns: 1fr !important; gap: 0; }
+            .file-upload-row { grid-template-columns: 1fr !important; gap: 12px; }
+            .file-upload-area { padding: 14px !important; }
+            .form-actions {
+                flex-direction: column !important;
+                gap: 10px !important;
+            }
+            .btn-action { width: 100% !important; padding: 13px !important; font-size: 15px !important; }
+            .otp-input { max-width: 100% !important; font-size: 18px !important; }
+            .otp-actions { flex-direction: column !important; }
+            .btn-resend-otp { width: 100% !important; }
+            .procedure-info { padding: 12px !important; }
+            .commitment-box { padding: 12px !important; }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 0 10px !important; }
+            .section-card-header h1 { font-size: 16px !important; }
+            .form-section-title { font-size: 14px !important; }
+            .main-content { padding: 8px 0 24px !important; }
         }
     </style>
 </head>
