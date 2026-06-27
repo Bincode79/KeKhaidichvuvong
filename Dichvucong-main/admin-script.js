@@ -186,6 +186,7 @@ function renderFilteredTable() {
                 <td>
                     <div class="action-btns">
                         <button class="btn btn-secondary btn-xs" onclick="openDetail('${p.id}','${p._source}')">👁 Xem</button>
+                        <button class="btn btn-xs" style="background:#27ae60;color:#fff;border:none;" onclick="quickOpenQR('${p.id}','${p._source}')" title="Tạo QR thanh toán">📲</button>
                         <button class="btn btn-danger btn-xs" onclick="openDelete('${p.id}','${p._source}','${esc(p.fullName || '')}')">🗑</button>
                     </div>
                 </td>
@@ -326,6 +327,41 @@ function openDetail(id, source) {
             </div>
         </div>`;
 
+    // === Inline QR section ===
+    const qrUrl = buildProfileQRUrl(p);
+    if (qrUrl) {
+        html += `
+        <div class="detail-section" style="border-top:2px solid #e8f5e9;">
+            <div class="detail-section-title" style="color:#27ae60;">📲 Mã QR thanh toán hồ sơ</div>
+            <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;padding:4px 0 8px;">
+                <div style="text-align:center;flex-shrink:0;">
+                    <img src="${qrUrl}" alt="QR Code" style="width:168px;height:168px;object-fit:contain;border-radius:12px;border:2px solid #27ae60;box-shadow:0 4px 16px rgba(39,174,96,0.18);">
+                    <p style="font-size:11px;color:#888;margin:6px 0 0;">Quét để thanh toán phí hồ sơ</p>
+                </div>
+                <div style="flex:1;min-width:180px;">
+                    <div style="font-size:13px;line-height:2.1;color:#444;background:#f8fffe;border:1px solid #d4edda;border-radius:8px;padding:10px 14px;margin-bottom:14px;">
+                        <div><b>Mã hồ sơ:</b> <code style="background:#eee;padding:1px 6px;border-radius:4px;">${code}</code></div>
+                        <div><b>Ngân hàng:</b> ${esc(p.bankName || '')}</div>
+                        <div><b>Số tài khoản:</b> ${esc(p.accountNumber || '')}</div>
+                        <div><b>Chủ tài khoản:</b> ${esc(p.accountHolder || '')}</div>
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button class="btn btn-success btn-sm" onclick="publishProfileQR('${p.id}','${p._source}')">📢 Đăng QR lên trang chủ</button>
+                        <button class="btn btn-secondary btn-sm" onclick="openQRFromProfile()">✏️ Chỉnh sửa QR</button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    } else if (p._source === 'main') {
+        html += `
+        <div class="detail-section" style="border-top:2px solid #ffeeba;">
+            <div class="detail-section-title" style="color:#856404;">📲 Mã QR thanh toán hồ sơ</div>
+            <div style="background:#fff8e1;border:1px solid #ffeeba;border-radius:8px;padding:14px 16px;font-size:13px;color:#856404;">
+                ⚠️ Hồ sơ này chưa có thông tin ngân hàng. Người nộp hồ sơ cần cung cấp số tài khoản để tạo QR thanh toán.
+            </div>
+        </div>`;
+    }
+
     document.getElementById('modalDetailBody').innerHTML = html;
     openModal('modalDetail');
 }
@@ -353,21 +389,28 @@ function openQRFromProfile() {
     if (!p) return;
     closeModal('modalDetail');
     showTab('qrmanager', document.querySelector('.sidebar-nav a:nth-child(3)'));
+    const code = generateFileCode(p);
     if (p.bankName) {
-        const bankMap = {
-            'Vietcombank': 'VCB', 'BIDV': 'BIDV', 'VietinBank': 'ICB', 'Agribank': 'VBAAGRIBANK',
-            'Techcombank': 'TCB', 'MBBank': 'MB', 'TPBank': 'TPBANK', 'ACB': 'ACB',
-            'VPBank': 'VPB', 'Sacombank': 'STB', 'HDBank': 'HDB', 'SHB': 'SHB',
-            'OCB': 'OCB', 'MSB': 'MSB', 'SeABank': 'SEABANK', 'Eximbank': 'EXIMBANK'
-        };
-        const bid = bankMap[p.bankName] || '';
+        const bid = BANK_MAP[p.bankName] || '';
         if (bid) document.getElementById('qrBank').value = bid;
         if (p.accountNumber) document.getElementById('qrAccount').value = p.accountNumber;
         if (p.accountHolder) document.getElementById('qrAccountName').value = p.accountHolder;
     }
-    document.getElementById('qrFileCode').value = generateFileCode(p);
-    document.getElementById('qrNote').value = `Phi dich vu ho so ${generateFileCode(p)}`;
+    document.getElementById('qrFileCode').value = code;
+    document.getElementById('qrNote').value = `Phi dich vu ho so ${code}`;
     document.getElementById('qrTitle').value = `Thanh toán phí hồ sơ: ${p.fullName || ''}`;
+    // Tự động xem trước QR ngay sau khi điền form
+    if (p.bankName && p.accountNumber && p.accountHolder) {
+        setTimeout(previewQR, 100);
+    }
+}
+
+// Mở QR tab nhanh từ nút trên bảng (không cần mở detail trước)
+function quickOpenQR(id, source) {
+    const p = allProfiles.find(x => x.id === id && x._source === source);
+    if (!p) return;
+    currentDetailId = { id, source };
+    openQRFromProfile();
 }
 
 // ===== DELETE =====
@@ -401,6 +444,16 @@ function clearAllProfiles() {
 }
 
 // ===== QR =====
+// Map tên ngân hàng → mã VietQR
+const BANK_MAP = {
+    'Vietcombank':'VCB','BIDV':'BIDV','VietinBank':'ICB','Agribank':'VBAAGRIBANK',
+    'Techcombank':'TCB','MBBank':'MB','TPBank':'TPBANK','ACB':'ACB',
+    'VPBank':'VPB','Sacombank':'STB','HDBank':'HDB','SHB':'SHB',
+    'OCB':'OCB','MSB':'MSB','SeABank':'SEABANK','Eximbank':'EXIMBANK',
+    'ABBank':'ABBANK','BacABank':'BACABANK','NamABank':'NAMABANK'
+};
+
+// Tạo QR URL từ form admin
 function buildQRUrl() {
     const bank = document.getElementById('qrBank').value;
     const account = document.getElementById('qrAccount').value.trim();
@@ -412,6 +465,42 @@ function buildQRUrl() {
     if (amount) url += `&amount=${amount}`;
     if (note) url += `&addInfo=${encodeURIComponent(note)}`;
     return url;
+}
+
+// Tạo QR URL trực tiếp từ hồ sơ (inline)
+function buildProfileQRUrl(p) {
+    const bankId = BANK_MAP[p.bankName] || '';
+    const account = (p.accountNumber || '').trim();
+    const holder = (p.accountHolder || '').trim();
+    if (!bankId || !account || !holder) return null;
+    const code = generateFileCode(p);
+    let url = `https://img.vietqr.io/image/${bankId}-${account}-compact2.png?accountName=${encodeURIComponent(holder)}`;
+    url += `&addInfo=${encodeURIComponent('Phi HS ' + code)}`;
+    return url;
+}
+
+// Đăng QR của hồ sơ cụ thể lên trang chủ
+function publishProfileQR(id, source) {
+    const p = allProfiles.find(x => x.id === id && x._source === source);
+    if (!p) return;
+    const code = generateFileCode(p);
+    const bankId = BANK_MAP[p.bankName] || '';
+    if (!bankId || !p.accountNumber || !p.accountHolder) {
+        toast('⚠️ Hồ sơ chưa có đủ thông tin ngân hàng để tạo QR!', 'error');
+        return;
+    }
+    const config = {
+        bank: bankId, account: p.accountNumber, name: p.accountHolder,
+        amount: '', note: 'Phi HS ' + code,
+        title: 'Thanh toán phí hồ sơ: ' + (p.fullName || ''),
+        fileCode: code,
+        bankLabel: p.bankName,
+        url: buildProfileQRUrl(p),
+        publishedAt: new Date().toISOString()
+    };
+    localStorage.setItem(QR_CONFIG_KEY, JSON.stringify(config));
+    loadQRStatus();
+    toast('✅ Đã đăng QR hồ sơ ' + code + ' lên trang chủ!', 'success');
 }
 
 function previewQR() {
