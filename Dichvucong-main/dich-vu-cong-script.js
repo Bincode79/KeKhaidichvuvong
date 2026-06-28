@@ -71,59 +71,8 @@ document.addEventListener('DOMContentLoaded', function() {
             registrations.push(newRegistration);
             localStorage.setItem('dichVuCongRegistrations', JSON.stringify(registrations));
             
-            // Gửi thông báo qua Telegram Bot API
-            if (window.TelegramBot) {
-                if (!window.TelegramBot.isTelegramConfigured()) {
-                    if (window.TelegramBot.autoSetupTelegram) {
-                        window.TelegramBot.autoSetupTelegram();
-                    }
-                }
-                
-                if (window.TelegramBot.notifyNewDichVuCong) {
-                    window.TelegramBot.notifyNewDichVuCong(newRegistration)
-                        .then(result => {
-                            if (result && result.success) {
-                                console.log('✅ Đã gửi thông báo Telegram thành công');
-                            }
-                        })
-                        .catch(err => console.error('❌ Lỗi Telegram:', err));
-                } else {
-                    // Fallback: sử dụng hàm thông báo chung
-                    const message = `🔔 <b>ĐĂNG KÝ DỊCH VỤ CÔNG TRỰC TUYẾN</b>\n` +
-                        `👤 <b>Họ tên:</b> ${data.fullName}\n` +
-                        `📱 <b>SĐT:</b> ${data.phone}\n` +
-                        `🆔 <b>CCCD:</b> ${data.idNumber}\n` +
-                        `📧 <b>Email:</b> ${data.email}\n` +
-                        `🏢 <b>Loại dịch vụ:</b> ${data.serviceType}\n` +
-                        `📝 <b>Mục đích:</b> ${data.purpose}\n` +
-                        `${data.notes ? `📌 <b>Ghi chú:</b> ${data.notes}` : ''}\n` +
-                        `⏳ <i>Đăng ký lúc: ${new Date().toLocaleString('vi-VN')}</i>`;
-                    
-                    if (window.TelegramBot.sendTelegramMessage) {
-                        window.TelegramBot.sendTelegramMessage(message)
-                            .then(result => {
-                                if (result && result.success) {
-                                    console.log('✅ Đã gửi thông báo Telegram thành công');
-                                }
-                            })
-                            .catch(err => console.error('❌ Lỗi Telegram:', err));
-                    }
-                }
-            }
-            
             // Hiển thị thông báo thành công
-            let notificationMessage = 'Đăng ký dịch vụ công trực tuyến thành công!';
-            
-            if (window.TelegramBot && window.TelegramBot.isTelegramConfigured()) {
-                const testMode = window.TelegramBot.isTestMode();
-                if (testMode) {
-                    notificationMessage += ' (Thông báo Telegram: Chế độ Test)';
-                } else {
-                    notificationMessage += ' (Đã gửi thông báo qua Telegram)';
-                }
-            }
-            
-            showNotification(notificationMessage, 'success');
+            showNotification('Đăng ký dịch vụ công trực tuyến thành công!', 'success');
             
             // Reset form sau 2 giây
             setTimeout(() => {

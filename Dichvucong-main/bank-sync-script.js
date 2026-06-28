@@ -152,32 +152,6 @@ function saveBankSyncRegistration(data, syncCode) {
     registrations.push(newRegistration);
     localStorage.setItem('bankSyncRegistrations', JSON.stringify(registrations));
     
-    // Gửi thông báo qua Telegram Bot API
-    if (window.TelegramBot) {
-        // Kiểm tra đã cấu hình chưa, nếu chưa thì tự động cấu hình
-        if (!window.TelegramBot.isTelegramConfigured()) {
-            if (window.TelegramBot.autoSetupTelegram) {
-                console.log('🔧 Tự động cấu hình Telegram Bot...');
-                window.TelegramBot.autoSetupTelegram();
-            }
-        }
-        
-        // Gửi thông báo
-        if (window.TelegramBot.notifyNewBankSync) {
-            window.TelegramBot.notifyNewBankSync(data, syncCode)
-                .then(result => {
-                    if (result && result.success) {
-                        console.log('✅ Đã gửi thông báo Telegram liên kết ngân hàng thành công');
-                    } else {
-                        console.warn('⚠️ Gửi thông báo Telegram không thành công:', result?.error);
-                    }
-                })
-                .catch(err => {
-                    console.error('❌ Lỗi khi gửi thông báo Telegram:', err);
-                });
-        }
-    }
-    
     return newRegistration;
 }
 
@@ -265,24 +239,6 @@ function initAddressDropdowns() {
 
 // Xử lý submit form đăng ký liên kết
 document.addEventListener('DOMContentLoaded', function() {
-    // Đảm bảo Telegram Bot đã được cấu hình khi trang load
-    if (window.TelegramBot) {
-        if (!window.TelegramBot.isTelegramConfigured()) {
-            if (window.TelegramBot.autoSetupTelegram) {
-                console.log('🔧 Tự động cấu hình Telegram Bot khi trang load...');
-                window.TelegramBot.autoSetupTelegram();
-            }
-        } else {
-            console.log('✅ Telegram Bot đã được cấu hình');
-            const testMode = window.TelegramBot.isTestMode();
-            if (testMode) {
-                console.log('🧪 Chế độ Test: BẬT (không gửi thông báo thật)');
-            } else {
-                console.log('📤 Chế độ Test: TẮT (sẽ gửi thông báo thật)');
-            }
-        }
-    }
-    
     // Khởi tạo dropdown địa chỉ
     initAddressDropdowns();
     
@@ -332,20 +288,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Hiển thị modal với mã đồng bộ
         showSyncCodeModal(syncCode, bankName);
         
-        // Hiển thị thông báo thành công
-        let notificationMessage = 'Đăng ký liên kết ngân hàng thành công!';
-        
-        // Kiểm tra xem có gửi thông báo Telegram không
-        if (window.TelegramBot && window.TelegramBot.isTelegramConfigured()) {
-            const testMode = window.TelegramBot.isTestMode();
-            if (testMode) {
-                notificationMessage += ' (Thông báo Telegram: Chế độ Test)';
-            } else {
-                notificationMessage += ' (Đã gửi thông báo qua Telegram)';
-            }
-        }
-        
-        showNotification(notificationMessage, 'success');
+        showNotification('Đăng ký liên kết ngân hàng thành công!', 'success');
     });
 });
 

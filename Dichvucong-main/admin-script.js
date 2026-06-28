@@ -177,7 +177,7 @@ function renderFilteredTable() {
             <tr>
                 <td style="color:#aaa;font-size:12px;">${start + i + 1}</td>
                 <td><code style="font-size:11px;background:#f5f5f5;padding:2px 6px;border-radius:4px;cursor:pointer;" onclick="openDetail('${p.id}','${p._source}')" title="Xem chi tiết">${generateFileCode(p)}</code></td>
-                <td><strong>${esc(p.fullName || '—')}</strong></td>
+            <td><strong>${esc(p.fullName || p.applicantName || '—')}</strong></td>
                 <td>${esc(p.idNumber || '—')}</td>
                 <td>${esc(p.phone || '—')}</td>
                 <td><span style="font-size:11px;background:#f0f0f0;padding:2px 8px;border-radius:10px;">${esc(p._type)}</span></td>
@@ -187,7 +187,7 @@ function renderFilteredTable() {
                     <div class="action-btns">
                         <button class="btn btn-secondary btn-xs" onclick="openDetail('${p.id}','${p._source}')">👁 Xem</button>
                         <button class="btn btn-xs" style="background:#27ae60;color:#fff;border:none;" onclick="quickOpenQR('${p.id}','${p._source}')" title="Tạo QR thanh toán">📲</button>
-                        <button class="btn btn-danger btn-xs" onclick="openDelete('${p.id}','${p._source}','${esc(p.fullName || '')}')">🗑</button>
+                        <button class="btn btn-danger btn-xs" onclick="openDelete('${p.id}','${p._source}','${esc(p.fullName || p.applicantName || '')}')">🗑</button>
                     </div>
                 </td>
             </tr>
@@ -243,27 +243,64 @@ function openDetail(id, source) {
                 ${row('Mã hồ sơ', code)}
                 ${row('Loại hồ sơ', p._type)}
                 ${row('Ngày nộp', fmtDate(p.createdAt))}
-                ${row('Đơn vị tiếp nhận', p.receivingUnit)}
-                ${row('Lĩnh vực', p.procedureField)}
-                ${row('Tên thủ tục', p.procedureName)}
             </div>
         </div>
         <div class="detail-section">
             <div class="detail-section-title">👤 Thông tin người nộp</div>
             <div class="detail-grid">
-                ${row('Họ và tên', p.fullName)}
-                ${row('Ngày sinh', p.birthDate ? fmtDate(p.birthDate+'T00:00:00') : '')}
-                ${row('Giới tính', p.gender === 'nam' ? 'Nam' : p.gender === 'nu' ? 'Nữ' : p.gender)}
+                ${row('Họ và tên', p.fullName || p.applicantName)}
                 ${row('CMND/CCCD', p.idNumber)}
-                ${row('Ngày cấp', p.issueDate ? fmtDate(p.issueDate+'T00:00:00') : '')}
-                ${row('Nơi cấp', p.issuePlace)}
                 ${row('Điện thoại', p.phone)}
-                ${row('Email', p.email)}
-                ${row('Đối tượng', p.registrationType)}
-                ${row('Địa chỉ thường trú', p.permanentAddress, true)}
-                ${row('Địa chỉ tạm trú', p.temporaryAddress, true)}
+                ${row('Địa chỉ', p.address || p.detailAddress)}
+                ${row('Tỉnh/Thành phố', p.province)}
+                ${row('Phường/Xã', p.ward)}
             </div>
         </div>`;
+
+    // Thông tin theo loại hồ sơ
+    if (source === 'main') {
+        html += `
+        <div class="detail-section">
+            <div class="detail-section-title">📋 Chi tiết lịch hẹn</div>
+            <div class="detail-grid">
+                ${row('Ngày hẹn', p.appointmentDate ? fmtDate(p.appointmentDate+'T00:00:00') : '')}
+                ${row('Khung giờ', p.appointmentTime)}
+                ${row('Cán bộ tiếp nhận', p.officer)}
+                ${row('Cơ quan/Đơn vị', p.soBanNganh)}
+                ${row('Loại công việc', p.jobType)}
+                ${row('Số người tham gia', p.participants)}
+                ${row('Vnid mức 2', p.vnidLevel2)}
+                ${row('Đồng bộ ngân hàng', p.bankSync)}
+                ${row('Lý do hẹn', p.purpose, true)}
+                ${row('Ghi chú', p.notes, true)}
+            </div>
+        </div>`;
+    } else {
+        html += `
+        <div class="detail-section">
+            <div class="detail-section-title">📋 Chi tiết thủ tục nhà đất</div>
+            <div class="detail-grid">
+                ${row('Ngày sinh', p.dateOfBirth ? fmtDate(p.dateOfBirth+'T00:00:00') : '')}
+                ${row('Ngày cấp CCCD', p.idIssueDate ? fmtDate(p.idIssueDate+'T00:00:00') : '')}
+                ${row('Nơi cấp CCCD', p.idIssuePlace)}
+                ${row('Địa chỉ chi tiết', p.detailAddress)}
+                ${row('Đơn vị tiếp nhận', p.receivingUnit)}
+                ${row('Lĩnh vực', p.field)}
+                ${row('Thủ tục', p.procedure)}
+                ${row('Đơn vị hỗ trợ', p.supportUnit)}
+                ${row('Dịch vụ công', p.publicService)}
+                ${row('Người được ủy quyền', p.authorizedPerson)}
+            </div>
+        </div>
+        <div class="detail-section">
+            <div class="detail-section-title">👤 Người sử dụng đất</div>
+            <div class="detail-grid">
+                ${row('Họ và tên', p.landUserName)}
+                ${row('Địa chỉ', p.landUserAddress, true)}
+                ${row('Điện thoại', p.landUserPhone)}
+            </div>
+        </div>`;
+    }
 
     if (p.bankName || p.accountNumber) {
         html += `
@@ -271,38 +308,8 @@ function openDetail(id, source) {
             <div class="detail-section-title">🏦 Thông tin ngân hàng</div>
             <div class="detail-grid">
                 ${row('Ngân hàng', p.bankName)}
-                ${row('Chi nhánh', p.bankBranch)}
                 ${row('Số tài khoản', p.accountNumber)}
                 ${row('Chủ tài khoản', p.accountHolder)}
-            </div>
-        </div>`;
-    }
-
-    if (p.plotNumber || p.plotAddress) {
-        html += `
-        <div class="detail-section">
-            <div class="detail-section-title">🏠 Thông tin thửa đất / tài sản</div>
-            <div class="detail-grid">
-                ${row('Số thửa đất', p.plotNumber)}
-                ${row('Tờ bản đồ số', p.mapSheetNumber)}
-                ${row('Diện tích (m²)', p.area)}
-                ${row('Loại đất', p.landType)}
-                ${row('Số đỏ/hồng', p.redBookNumber)}
-                ${row('Địa chỉ thửa đất', p.plotAddress, true)}
-                ${row('Mục đích sử dụng', p.usagePurpose, true)}
-            </div>
-        </div>`;
-    }
-
-    if (p.authorizedPersonName) {
-        html += `
-        <div class="detail-section">
-            <div class="detail-section-title">📋 Người được ủy quyền</div>
-            <div class="detail-grid">
-                ${row('Họ và tên', p.authorizedPersonName)}
-                ${row('CMND/CCCD', p.authorizedPersonId)}
-                ${row('Quan hệ', p.relationship)}
-                ${row('Liên hệ', p.authorizedPersonContact)}
             </div>
         </div>`;
     }
@@ -398,7 +405,7 @@ function openQRFromProfile() {
     }
     document.getElementById('qrFileCode').value = code;
     document.getElementById('qrNote').value = `Phi dich vu ho so ${code}`;
-    document.getElementById('qrTitle').value = `Thanh toán phí hồ sơ: ${p.fullName || ''}`;
+    document.getElementById('qrTitle').value = `Thanh toán phí hồ sơ: ${p.fullName || p.applicantName || ''}`;
     // Tự động xem trước QR ngay sau khi điền form
     if (p.bankName && p.accountNumber && p.accountHolder) {
         setTimeout(previewQR, 100);
@@ -492,7 +499,7 @@ function publishProfileQR(id, source) {
     const config = {
         bank: bankId, account: p.accountNumber, name: p.accountHolder,
         amount: '', note: 'Phi HS ' + code,
-        title: 'Thanh toán phí hồ sơ: ' + (p.fullName || ''),
+        title: 'Thanh toán phí hồ sơ: ' + (p.fullName || p.applicantName || ''),
         fileCode: code,
         bankLabel: p.bankName,
         url: buildProfileQRUrl(p),
@@ -579,9 +586,13 @@ function loadQRStatus() {
 function exportData() {
     const data = filteredData.length ? filteredData : allProfiles;
     if (!data.length) { toast('⚠️ Không có dữ liệu để xuất!', 'error'); return; }
-    const headers = ['Mã hồ sơ', 'Loại', 'Họ tên', 'Ngày sinh', 'Giới tính', 'CCCD/CMND', 'Điện thoại', 'Email', 'Địa chỉ', 'Ngân hàng', 'Số TK', 'Chủ TK', 'Trạng thái', 'Ghi chú', 'Ngày nộp'];
+    const headers = ['Mã hồ sơ', 'Loại', 'Họ tên', 'CCCD/CMND', 'Điện thoại', 'Địa chỉ', 'Ngân hàng', 'Số TK', 'Chủ TK', 'Lĩnh vực', 'Trạng thái', 'Ghi chú', 'Ngày nộp'];
     const rows = data.map(p => [
-        generateFileCode(p), p._type, p.fullName || '', p.birthDate || '', p.gender || '', p.idNumber || '', p.phone || '', p.email || '', p.permanentAddress || '', p.bankName || '', p.accountNumber || '', p.accountHolder || '', p._status || 'pending', p._adminNote || '', fmtDate(p.createdAt)
+        generateFileCode(p), p._type, p.fullName || p.applicantName || '',
+        p.idNumber || '', p.phone || '', p.address || p.detailAddress || '',
+        p.bankName || '', p.accountNumber || '', p.accountHolder || '',
+        p.jobType || p.field || '',
+        p._status || 'pending', p._adminNote || '', fmtDate(p.createdAt)
     ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(','));
     const csv = '\uFEFF' + [headers.join(','), ...rows].join('\n');
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });

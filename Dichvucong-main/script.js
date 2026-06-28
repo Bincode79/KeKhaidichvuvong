@@ -23,28 +23,6 @@ function addAppointment(appointmentData) {
     appointments.push(newAppointment);
     saveAppointments(appointments);
     
-    // Gửi thông báo qua Telegram Bot API
-    if (window.TelegramBot) {
-        // Kiểm tra đã cấu hình chưa
-        if (!window.TelegramBot.isTelegramConfigured()) {
-            console.warn('⚠️ Telegram Bot chưa được cấu hình. Vui lòng truy cập trang Cấu hình Telegram Bot.');
-            // Tùy chọn: Có thể hiện thông báo nhỏ nhắc admin cấu hình
-        } else {
-            // Gửi thông báo
-            if (window.TelegramBot.notifyNewAppointment) {
-                window.TelegramBot.notifyNewAppointment(newAppointment)
-                    .then(result => {
-                        if (result && result.success) {
-                            console.log('✅ Đã gửi thông báo Telegram thành công');
-                        } else if (result && !result.testMode) {
-                            console.warn('⚠️ Gửi Telegram thất bại:', result.error);
-                        }
-                    })
-                    .catch(err => console.error('❌ Lỗi Telegram:', err));
-            }
-        }
-    }
-    
     return newAppointment;
 }
 
@@ -63,40 +41,7 @@ function clearAllAppointments() {
         localStorage.removeItem(STORAGE_KEY);
         renderAppointments();
         
-        let notificationMessage = 'Đã xóa tất cả đăng ký';
-        
-        // Gửi thông báo qua Telegram Bot API
-        if (window.TelegramBot) {
-            // Kiểm tra đã cấu hình chưa
-            if (!window.TelegramBot.isTelegramConfigured()) {
-                if (window.TelegramBot.autoSetupTelegram) {
-                    window.TelegramBot.autoSetupTelegram();
-                }
-            }
-            
-            if (window.TelegramBot.notifyClearAllAppointments) {
-                window.TelegramBot.notifyClearAllAppointments(count, 'appointment')
-                    .then(result => {
-                        if (result && result.success) {
-                            console.log('✅ Đã gửi thông báo xóa tất cả qua Telegram thành công');
-                        }
-                    })
-                    .catch(err => {
-                        console.error('❌ Lỗi khi gửi thông báo Telegram:', err);
-                    });
-            }
-            
-            if (window.TelegramBot.isTelegramConfigured()) {
-                const testMode = window.TelegramBot.isTestMode();
-                if (testMode) {
-                    notificationMessage += ' (Thông báo Telegram: Chế độ Test)';
-                } else {
-                    notificationMessage += ' (Đã gửi thông báo qua Telegram)';
-                }
-            }
-        }
-        
-        showNotification(notificationMessage, 'success');
+        showNotification('Đã xóa tất cả đăng ký', 'success');
     }
 }
 
@@ -127,7 +72,7 @@ function formatTime(timeString) {
     if (!timeString) return '';
     // Nếu là select dropdown, timeString đã có format HH:MM
     if (timeString.includes(':')) {
-    const [hours, minutes] = timeString.split(':');
+        const [hours, minutes] = timeString.split(':');
         return `${hours.padStart(2, '0')}:${minutes || '00'}`;
     }
     return timeString;
@@ -145,7 +90,7 @@ function getDepartmentName(value) {
         'phong-van-hoa-the-thao': 'Phòng Văn hóa, thể thao',
         'phong-lao-dong-thuong-binh-xa-hoi': 'Phòng Lao động - Thương binh - Xã hội',
         'phong-kinh-te-ha-tang': 'Phòng Kinh tế - Hạ tầng',
-        'phong-quan-ly-dat-dai-moi-truong': 'Phòng Quản Lí Đất Đai Và Môi Trường',
+        'phong-quan-ly-dat-dai-moi-truong': 'Phòng Quản Lý Đất Đai Và Môi Trường',
         'phong-cong-an-phuong-xa': 'Phòng Công an Phường/Xã',
         'phong-quan-ly-dan-cu': 'Phòng Quản lý dân cư',
         'phong-to-chuc-doan-the': 'Phòng tổ chức đoàn thể',
@@ -287,63 +232,12 @@ function handleDelete(id) {
         deleteAppointment(id);
         renderAppointments();
         
-        let notificationMessage = 'Đã xóa đăng ký thành công';
-        
-        // Gửi thông báo qua Telegram Bot API
-        if (window.TelegramBot) {
-            // Kiểm tra đã cấu hình chưa
-            if (!window.TelegramBot.isTelegramConfigured()) {
-                if (window.TelegramBot.autoSetupTelegram) {
-                    window.TelegramBot.autoSetupTelegram();
-                }
-            }
-            
-            if (window.TelegramBot.notifyDeleteAppointment) {
-                window.TelegramBot.notifyDeleteAppointment(appointment, 'appointment')
-                    .then(result => {
-                        if (result && result.success) {
-                            console.log('✅ Đã gửi thông báo xóa qua Telegram thành công');
-                        }
-                    })
-                    .catch(err => {
-                        console.error('❌ Lỗi khi gửi thông báo Telegram:', err);
-                    });
-            }
-            
-            if (window.TelegramBot.isTelegramConfigured()) {
-                const testMode = window.TelegramBot.isTestMode();
-                if (testMode) {
-                    notificationMessage += ' (Thông báo Telegram: Chế độ Test)';
-                } else {
-                    notificationMessage += ' (Đã gửi thông báo qua Telegram)';
-                }
-            }
-        }
-        
-        showNotification(notificationMessage, 'success');
+        showNotification('Đã xóa đăng ký thành công', 'success');
     }
 }
 
 // Xử lý submit form
 document.addEventListener('DOMContentLoaded', function () {
-    // Đảm bảo Telegram Bot đã được cấu hình khi trang load
-    if (window.TelegramBot) {
-        if (!window.TelegramBot.isTelegramConfigured()) {
-            if (window.TelegramBot.autoSetupTelegram) {
-                console.log('🔧 Tự động cấu hình Telegram Bot khi trang load...');
-                window.TelegramBot.autoSetupTelegram();
-            }
-        } else {
-            console.log('✅ Telegram Bot đã được cấu hình');
-            const testMode = window.TelegramBot.isTestMode();
-            if (testMode) {
-                console.log('🧪 Chế độ Test: BẬT (không gửi thông báo thật)');
-            } else {
-                console.log('📤 Chế độ Test: TẮT (sẽ gửi thông báo thật)');
-            }
-        }
-    }
-    
     const appointmentForm = document.getElementById('appointmentForm');
     if (!appointmentForm) return;
     
@@ -390,20 +284,20 @@ document.addEventListener('DOMContentLoaded', function () {
         const jobTypeSelect = document.getElementById('jobType');
     
     const appointmentData = {
-        fullName: formData.get('fullName').trim(),
-        idNumber: formData.get('idNumber').trim(),
-        phone: formData.get('phone').trim(),
-            address: formData.get('address').trim(),
-            officer: formData.get('officer').trim(),
+        fullName: (formData.get('fullName') || '').trim(),
+        idNumber: (formData.get('idNumber') || '').trim(),
+        phone: (formData.get('phone') || '').trim(),
+            address: (formData.get('address') || '').trim(),
+            officer: (formData.get('officer') || '').trim(),
         province: provinceSelect ? provinceSelect.options[provinceSelect.selectedIndex].text : '',
         ward: wardSelect ? wardSelect.options[wardSelect.selectedIndex].text : '',
         soBanNganh: soBanNganhSelect ? soBanNganhSelect.options[soBanNganhSelect.selectedIndex].text : '',
         appointmentDate: formData.get('appointmentDate'),
         appointmentTime: formData.get('appointmentTime'),
             jobType: jobTypeSelect ? jobTypeSelect.options[jobTypeSelect.selectedIndex].text : '',
-        purpose: formData.get('purpose').trim(),
+        purpose: (formData.get('purpose') || '').trim(),
             participants: formData.get('participants') || '1',
-        notes: formData.get('notes').trim(),
+        notes: (formData.get('notes') || '').trim(),
             vnidLevel2: formData.get('vnidLevel2') === 'yes' ? 'Có' : 'Chưa',
             bankSync: formData.get('bankSync') === 'yes' ? 'Có' : 'Chưa',
             confirmAccuracy: formData.get('confirmAccuracy') === 'yes' ? 'Có' : 'Chưa'
@@ -444,20 +338,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Render lại danh sách
     renderAppointments();
     
-    // Hiển thị thông báo
-        let notificationMessage = 'Đăng ký lịch hẹn thành công!';
-        
-        // Kiểm tra xem có gửi thông báo Telegram không
-        if (window.TelegramBot && window.TelegramBot.isTelegramConfigured()) {
-            const testMode = window.TelegramBot.isTestMode();
-            if (testMode) {
-                notificationMessage += ' (Thông báo Telegram: Chế độ Test)';
-            } else {
-                notificationMessage += ' (Đã gửi thông báo qua Telegram)';
-            }
-        }
-        
-        showNotification(notificationMessage, 'success');
+        showNotification('Đăng ký lịch hẹn thành công!', 'success');
         
         // Scroll to top để xem thông báo
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -674,11 +555,11 @@ function initAppointmentDateField() {
             ];
             
             if (e.ctrlKey || e.metaKey) {
-                return true;
+                return;
             }
             
             if (allowedKeys.includes(e.key) || /^\d$/.test(e.key)) {
-                return true;
+                return;
             }
             
             e.preventDefault();
@@ -873,9 +754,9 @@ const themes = {
         light: '#e7f3ff'
     },
     red: {
-        primary: '#DC143C',
-        hover: '#B22222',
-        light: '#FFE4E1'
+        primary: '#CE7A58',
+        hover: '#B8603A',
+        light: '#FDF0EB'
     },
     green: {
         primary: '#228B22',
@@ -899,6 +780,31 @@ function applyTheme(themeName) {
     root.style.setProperty('--theme-hover', theme.hover);
     root.style.setProperty('--theme-light', theme.light);
     
+    // Thêm style hover động
+    let styleEl = document.getElementById('themeHoverStyles');
+    if (!styleEl) {
+        styleEl = document.createElement('style');
+        styleEl.id = 'themeHoverStyles';
+        document.head.appendChild(styleEl);
+    }
+    styleEl.textContent = `
+        .top-header:hover, .btn-primary:hover, .btn-register:hover, .btn-search:hover {
+            background: ${theme.hover} !important;
+        }
+        .btn-login:hover {
+            background: ${theme.light} !important;
+        }
+        .category-link:hover, .submenu a:hover {
+            background: ${theme.light} !important;
+            color: ${theme.primary} !important;
+            border-left-color: ${theme.primary} !important;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: ${theme.primary} !important;
+            box-shadow: 0 0 0 2px ${theme.light} !important;
+        }
+    `;
+    
     // Cập nhật các phần tử có màu chủ đạo
     document.querySelectorAll('.top-header, .btn-primary, .btn-register, .btn-search').forEach(el => {
         el.style.background = theme.primary;
@@ -911,10 +817,6 @@ function applyTheme(themeName) {
     
     document.querySelectorAll('.main-nav .nav-link').forEach(el => {
         el.style.color = '#000000';
-    });
-    
-    document.querySelectorAll('.top-header:hover, .main-nav .nav-link:hover, .btn-primary:hover, .btn-register:hover, .btn-search:hover').forEach(el => {
-        el.style.background = theme.hover;
     });
     
     document.querySelectorAll('.section-card-header, .section-card-title, .search-title, .logo-main-text, .logo-tagline, .logo-placeholder-text, .appointment-item-title').forEach(el => {
@@ -942,23 +844,8 @@ function applyTheme(themeName) {
         el.style.color = theme.primary;
     });
     
-    document.querySelectorAll('.btn-login:hover').forEach(el => {
-        el.style.background = theme.light;
-    });
-    
-    document.querySelectorAll('.category-link:hover, .submenu a:hover').forEach(el => {
-        el.style.background = theme.light;
-        el.style.color = theme.primary;
-        el.style.borderLeftColor = theme.primary;
-    });
-    
     document.querySelectorAll('.appointment-item, .appointment-item-purpose').forEach(el => {
         el.style.borderLeftColor = theme.primary;
-    });
-    
-    document.querySelectorAll('.form-group input:focus, .form-group select:focus, .form-group textarea:focus').forEach(el => {
-        el.style.borderColor = theme.primary;
-        el.style.boxShadow = `0 0 0 2px ${theme.light}`;
     });
     
     // Cập nhật màu cho các phần tử chính
