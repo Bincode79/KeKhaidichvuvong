@@ -3333,24 +3333,41 @@ select.form-input {
     .main-nav {
         min-height: 44px;
     }
+
+    /* Ngăn scroll ngang trên tablet */
+    body {
+        overflow-x: hidden;
+    }
 }
 
-/* ---- TABLET 2 cột featured services (600px - 968px) ---- */
-@media (min-width: 601px) and (max-width: 968px) {
+/* ---- TABLET: 3 cột featured services, 2 cột categories (481px - 968px) ---- */
+@media (min-width: 481px) and (max-width: 968px) {
     .featured-services-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 12px;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 10px;
     }
 
     .service-categories {
         grid-template-columns: 1fr 1fr;
+    }
+
+    .category-links {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4px;
     }
 }
 
 /* ---- MOBILE (≤ 768px): Tất cả cải tiến chính ---- */
 @media (max-width: 768px) {
 
-    /* Header: logo căn giữa, hamburger absolute right */
+    /* Ngăn tuyệt đối scroll ngang */
+    html, body {
+        overflow-x: hidden;
+        max-width: 100%;
+    }
+
+    /* ===== HEADER: logo căn giữa, hamburger absolute right ===== */
     .main-header {
         padding: 10px 0;
     }
@@ -3368,19 +3385,20 @@ select.form-input {
         display: flex;
         justify-content: center;
         overflow: visible !important;
+        max-width: calc(100% - 50px); /* nhường chỗ cho hamburger */
     }
 
     .logo-placeholder {
         flex-direction: column !important;
         align-items: center !important;
-        gap: 6px !important;
+        gap: 5px !important;
         text-align: center;
         padding: 4px 0 !important;
     }
 
     .logo {
-        max-height: 56px;
-        max-width: 56px;
+        max-height: 58px;
+        max-width: 58px;
     }
 
     .logo-emblem {
@@ -3394,87 +3412,123 @@ select.form-input {
     }
 
     .logo-main-text {
-        font-size: 16px !important;
-        letter-spacing: 0.2px;
+        font-size: 15px !important;
+        letter-spacing: 0.1px;
         justify-content: center;
         text-align: center;
+        line-height: 1.25;
     }
 
     .logo-tagline {
-        font-size: 11px !important;
+        font-size: 10.5px !important;
         display: block !important;
         text-align: center;
         color: #903938;
+        line-height: 1.4;
     }
 
-    /* Nav toggle: absolute top-right thay vì trong flow */
+    /* Nav toggle: absolute top-right */
     .nav-toggle {
         position: absolute !important;
-        right: 4px !important;
+        right: 0px !important;
         top: 50% !important;
         transform: translateY(-50%) !important;
         flex-shrink: 0;
+        width: 40px;
+        height: 40px;
     }
 
-    /* Header-actions: ẩn trên mobile, nút đã ở mobile nav menu */
+    /* Header-actions: ẩn trên mobile */
     .header-actions {
         display: none !important;
     }
 
-    /* Nav mobile: tăng z-index menu và cải thiện overlay */
+    /* ===== NAV MENU ===== */
     .nav-menu {
-        padding-top: 70px;
+        padding-top: 65px;
     }
 
     .nav-link {
         min-height: 48px;
-        font-size: 15px;
+        font-size: 14px;
+        padding: 14px 16px;
     }
 
     .submenu a {
         min-height: 44px;
-        padding-left: 36px;
+        padding-left: 32px;
+        font-size: 13px;
     }
 
-    /* Search section: gọn hơn trên mobile */
+    /* ===== SEARCH SECTION ===== */
     .search-featured-section {
-        padding: 14px 0 10px;
+        padding: 12px 0 10px;
     }
 
     .search-main-row {
-        padding: 6px 12px;
+        flex-direction: row !important;
+        gap: 8px;
+        padding: 6px 10px;
         border-radius: 8px;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
+        align-items: center;
+    }
+
+    .search-input-wrapper {
+        flex: 1;
+        min-width: 0;
     }
 
     .search-input-main {
-        font-size: 16px; /* tránh zoom trên iOS */
-        padding: 8px 50px 8px 8px;
+        font-size: 16px;
+        padding: 9px 44px 9px 10px;
+        width: 100%;
     }
 
     .btn-search-main {
-        width: 34px;
-        height: 34px;
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
     }
 
     .btn-search-advanced {
-        font-size: 13px;
-        min-width: auto;
-        padding: 10px 0;
+        display: none; /* ẩn trên mobile nhỏ, tiết kiệm không gian */
     }
 
-    /* Featured services: 1 cột trên mobile nhỏ */
+    /* ===== FEATURED SERVICES: 1 cột ≤480px, 3 cột 481-768px ===== */
     .featured-services-grid {
-        grid-template-columns: 1fr !important;
+        grid-template-columns: repeat(3, 1fr) !important;
         gap: 8px;
     }
 
     .featured-service-btn {
-        min-height: 50px;
-        font-size: 14px;
+        min-height: 56px;
+        padding: 10px 8px;
+        flex-direction: column;
+        gap: 6px;
+        text-align: center;
     }
 
-    /* News section: active slide dạng cột trên mobile */
+    .featured-service-icon {
+        flex-shrink: 0;
+    }
+
+    .featured-service-icon svg {
+        width: 26px;
+        height: 26px;
+    }
+
+    .featured-service-title {
+        font-size: 11.5px;
+        line-height: 1.3;
+        text-align: center;
+    }
+
+    /* ===== NEWS SECTION ===== */
+    .news-section {
+        padding: 0;
+    }
+
     .news-slide.active {
         display: flex;
         flex-direction: column;
@@ -3482,8 +3536,8 @@ select.form-input {
 
     .news-item {
         border-right: none !important;
-        border-bottom: 1px solid #e9e0d8;
-        padding: 12px 14px;
+        border-bottom: 1px solid #ecddd4;
+        padding: 11px 12px;
     }
 
     .news-item:last-child {
@@ -3491,46 +3545,78 @@ select.form-input {
     }
 
     .news-title {
-        font-size: 13px;
+        font-size: 12.5px;
+        line-height: 1.45;
         -webkit-line-clamp: 2;
     }
 
-    .news-nav-btn {
-        padding: 0 8px;
-        font-size: 22px;
+    .news-date {
+        font-size: 11px;
+        margin-top: 4px;
     }
 
-    /* Service categories: 1 cột trên mobile */
+    .news-nav-btn {
+        padding: 0 6px;
+        font-size: 22px;
+        min-width: 32px;
+    }
+
+    .news-dots {
+        padding: 8px 0;
+    }
+
+    /* ===== MAIN CONTENT / SERVICE CATEGORIES ===== */
+    .main-content {
+        padding: 12px 0 24px;
+    }
+
+    /* 1 cột ở mobile nhỏ ≤480px; 2 cột ở 481-768px (xử lý trong 481px block) */
     .service-categories {
         grid-template-columns: 1fr !important;
-        gap: 16px;
-        margin-bottom: 24px;
+        gap: 14px;
+        margin-bottom: 20px;
     }
 
-    .main-content {
-        padding: 14px 0 28px;
+    .category-section {
+        padding: 0;
+        border-radius: 8px;
+        overflow: hidden;
     }
 
     .category-title {
-        font-size: 17px;
-        padding: 10px 15px;
+        font-size: 16px;
+        padding: 11px 14px;
+        letter-spacing: 0.3px;
     }
 
     .category-links {
-        padding: 8px;
-        gap: 4px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+        padding: 4px;
     }
 
     .category-link {
-        font-size: 14px;
-        padding: 10px 12px;
-        min-height: 46px;
+        font-size: 13px;
+        padding: 10px 10px;
+        min-height: 48px;
+        border-radius: 6px;
+        gap: 8px;
+        word-break: break-word;
+    }
+
+    .category-link-text {
+        font-size: 12.5px;
+        line-height: 1.35;
+        word-break: break-word;
+        overflow-wrap: break-word;
     }
 
     .category-icon-box {
-        width: 30px;
-        height: 30px;
-        margin-right: 10px;
+        width: 28px;
+        height: 28px;
+        flex-shrink: 0;
+        margin-right: 0;
     }
 
     .category-img-icon {
@@ -3538,10 +3624,10 @@ select.form-input {
         height: 18px;
     }
 
-    /* Footer: wrap gọn trên mobile */
+    /* ===== FOOTER ===== */
     .main-footer {
-        padding: 20px 0;
-        margin-top: 30px;
+        padding: 18px 0;
+        margin-top: 24px;
     }
 
     .footer-content {
@@ -3550,17 +3636,24 @@ select.form-input {
 
     .footer-info {
         flex-direction: column !important;
-        gap: 6px;
+        gap: 5px;
         text-align: center;
+        align-items: center;
     }
 
     .footer-info p {
         white-space: normal !important;
         font-size: 12px;
         line-height: 1.5;
+        margin: 0;
     }
 
-    /* Toast notification: không tràn màn hình */
+    .admin-footer-link {
+        margin-top: 4px;
+        font-size: 12px;
+    }
+
+    /* ===== TOAST NOTIFICATION ===== */
     .notification {
         right: 10px;
         left: 10px;
@@ -3574,7 +3667,7 @@ select.form-input {
         transform: translateY(0);
     }
 
-    /* QR payment section */
+    /* ===== QR PAYMENT SECTION (trên trang chủ) ===== */
     .qr-payment-inner {
         flex-direction: column;
         gap: 20px;
@@ -3582,8 +3675,8 @@ select.form-input {
     }
 
     .qr-payment-img img {
-        width: 160px;
-        height: 160px;
+        width: 150px;
+        height: 150px;
     }
 
     .qr-payment-notice {
@@ -3591,39 +3684,44 @@ select.form-input {
     }
 
     .qr-payment-label {
-        min-width: 110px;
+        min-width: 100px;
+        font-size: 12px;
+    }
+
+    .qr-payment-val {
+        font-size: 13px;
+    }
+
+    .qr-payment-section h3 {
+        font-size: 16px;
     }
 }
 
-/* ---- MOBILE NHỎ (≤ 480px) ---- */
+/* ---- MOBILE NHỎ (≤ 480px): điện thoại nhỏ ---- */
 @media (max-width: 480px) {
+
+    /* Container sát lề hơn */
     .container {
         padding: 0 10px;
     }
 
+    /* ===== HEADER ===== */
     .main-header {
-        padding: 7px 0;
-    }
-
-    .logo {
-        max-height: 52px;
-        max-width: 52px;
+        padding: 8px 0;
     }
 
     .logo-emblem {
-        width: 52px !important;
-        height: 52px !important;
+        width: 54px !important;
+        height: 54px !important;
     }
 
     .logo-main-text {
-        font-size: 14px !important;
-        text-align: center;
+        font-size: 13.5px !important;
     }
 
     .logo-tagline {
         display: block !important;
-        font-size: 10.5px !important;
-        text-align: center;
+        font-size: 10px !important;
     }
 
     .nav-toggle {
@@ -3631,36 +3729,113 @@ select.form-input {
         height: 36px !important;
     }
 
+    /* ===== SEARCH ===== */
     .search-featured-section {
         padding: 10px 0 8px;
     }
 
-    .search-featured-section > .container {
-        padding: 6px 10px 10px;
-    }
-
     .search-main-row {
-        padding: 5px 10px;
+        padding: 5px 8px;
         margin-bottom: 8px;
     }
 
+    .search-input-main {
+        font-size: 16px !important;
+        padding: 8px 40px 8px 8px;
+    }
+
+    .btn-search-main {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* ===== FEATURED SERVICES: 1 cột ở điện thoại nhỏ ===== */
+    .featured-services-grid {
+        grid-template-columns: 1fr !important;
+        gap: 7px;
+    }
+
     .featured-service-btn {
-        min-height: 46px;
-        padding: 10px 12px;
+        flex-direction: row !important;
+        min-height: 48px;
+        padding: 10px 14px;
+        text-align: left;
+        gap: 12px;
+    }
+
+    .featured-service-icon svg {
+        width: 28px !important;
+        height: 28px !important;
     }
 
     .featured-service-title {
         font-size: 13px;
+        text-align: left;
+    }
+
+    /* ===== CATEGORIES: 1 cột điện thoại nhỏ ===== */
+    .category-links {
+        grid-template-columns: 1fr !important;
     }
 
     .category-link {
         font-size: 13px;
-        padding: 9px 10px;
-        min-height: 44px;
+        padding: 10px 12px;
+        min-height: 46px;
     }
 
     .category-title {
         font-size: 15px;
+        padding: 10px 12px;
+    }
+
+    /* ===== NEWS ===== */
+    .news-nav-btn {
+        padding: 0 4px;
+        font-size: 20px;
+        min-width: 28px;
+    }
+
+    .news-title {
+        font-size: 12px;
+    }
+
+    /* ===== MODALS (bottom sheet) ===== */
+    .modal-overlay {
+        padding: 0;
+        align-items: flex-end;
+    }
+
+    .modal-container {
+        border-radius: 18px 18px 0 0;
+        max-height: 94vh;
+        margin: 0 !important;
+        width: 100% !important;
+    }
+
+    .modal-header {
+        padding: 14px 16px;
+        border-radius: 18px 18px 0 0;
+    }
+
+    .modal-header h2 {
+        font-size: 16px;
+    }
+
+    .modal-body {
+        padding: 14px;
+    }
+
+    .btn-action, .btn-submit, .btn-cancel {
+        font-size: 14px;
+        padding: 12px 16px;
+        width: 100%;
+        text-align: center;
+    }
+
+    /* ===== FORM ===== */
+    .form-section-title {
+        font-size: 14.5px;
     }
 
     /* Form inputs: tránh zoom iOS */
@@ -3675,54 +3850,14 @@ select.form-input {
         font-size: 16px !important;
     }
 
-    /* Modal full screen trên điện thoại nhỏ */
-    .modal-overlay {
-        padding: 0;
-        align-items: flex-end;
-    }
-
-    .modal-container {
-        border-radius: 16px 16px 0 0;
-        max-height: 96vh;
-        margin: 0 !important;
-    }
-
-    .modal-header {
-        padding: 16px 18px;
-        border-radius: 16px 16px 0 0;
-    }
-
-    .modal-header h2 {
-        font-size: 17px;
-    }
-
-    .modal-body {
-        padding: 16px;
-    }
-
-    .btn-action, .btn-submit, .btn-cancel {
-        font-size: 14px;
-        padding: 11px 16px;
-    }
-
-    /* Form section tiêu đề */
-    .form-section-title {
-        font-size: 15px;
-    }
-
-    /* News nav buttons lớn hơn */
-    .news-nav-btn {
-        padding: 0 6px;
-        font-size: 20px;
-        min-width: 32px;
-    }
-
-    /* Footer */
+    /* ===== FOOTER ===== */
     .main-footer {
-        padding: 16px 0;
+        padding: 14px 0;
+        margin-top: 20px;
     }
 
-    .footer-info p {
-        font-size: 11px;
+    .footer-info p,
+    .footer-info a {
+        font-size: 11.5px;
     }
 }
