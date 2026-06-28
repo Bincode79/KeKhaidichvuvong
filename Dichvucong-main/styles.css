@@ -1306,13 +1306,13 @@ body {
     object-fit: contain;
 }
 
-/* CÔNG DÂN: icon màu xanh lá */
+/* CÔNG DÂN: icon màu xanh lá rõ ràng */
 img.category-img-icon {
-    filter: brightness(0) saturate(100%) invert(36%) sepia(80%) saturate(600%) hue-rotate(100deg) brightness(0.95);
+    filter: brightness(0) invert(1) sepia(100%) saturate(5) hue-rotate(90deg) brightness(0.85);
 }
 
 svg.category-img-icon {
-    filter: brightness(0) saturate(100%) invert(36%) sepia(80%) saturate(600%) hue-rotate(100deg) brightness(0.95);
+    filter: brightness(0) invert(1) sepia(100%) saturate(5) hue-rotate(90deg) brightness(0.85);
 }
 
 /* DOANH NGHIỆP: icon màu cam/nâu gốc */
@@ -1321,7 +1321,7 @@ svg.category-img-icon {
 }
 
 .category-section-business svg.category-img-icon {
-    filter: none;
+    filter: brightness(0) saturate(100%) invert(54%) sepia(34%) saturate(601%) hue-rotate(330deg) brightness(101%);
 }
 
 .category-link-text {
