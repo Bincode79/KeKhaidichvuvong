@@ -3350,29 +3350,70 @@ select.form-input {
 /* ---- MOBILE (≤ 768px): Tất cả cải tiến chính ---- */
 @media (max-width: 768px) {
 
-    /* Header gọn hơn trên mobile */
+    /* Header: logo căn giữa, hamburger absolute right */
     .main-header {
-        padding: 8px 0;
+        padding: 10px 0;
+    }
+
+    .header-content {
+        position: relative !important;
+        justify-content: center !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+    }
+
+    .logo-section {
+        flex: none !important;
+        display: flex;
+        justify-content: center;
+        overflow: visible !important;
+    }
+
+    .logo-placeholder {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 6px !important;
+        text-align: center;
+        padding: 4px 0 !important;
     }
 
     .logo {
-        max-height: 48px;
-        max-width: 220px;
+        max-height: 56px;
+        max-width: 56px;
     }
 
     .logo-emblem {
-        width: 48px;
-        height: 48px;
+        width: 62px !important;
+        height: 62px !important;
+    }
+
+    .logo-text-content {
+        align-items: center;
+        text-align: center;
     }
 
     .logo-main-text {
-        font-size: 14px;
-        letter-spacing: 0;
+        font-size: 16px !important;
+        letter-spacing: 0.2px;
+        justify-content: center;
+        text-align: center;
     }
 
     .logo-tagline {
-        font-size: 10px;
-        display: none;
+        font-size: 11px !important;
+        display: block !important;
+        text-align: center;
+        color: #903938;
+    }
+
+    /* Nav toggle: absolute top-right thay vì trong flow */
+    .nav-toggle {
+        position: absolute !important;
+        right: 4px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        flex-shrink: 0;
     }
 
     /* Header-actions: ẩn trên mobile, nút đã ở mobile nav menu */
@@ -3565,17 +3606,24 @@ select.form-input {
     }
 
     .logo {
-        max-height: 42px;
-        max-width: 180px;
+        max-height: 52px;
+        max-width: 52px;
     }
 
     .logo-emblem {
-        width: 42px;
-        height: 42px;
+        width: 52px !important;
+        height: 52px !important;
     }
 
     .logo-main-text {
-        font-size: 13px;
+        font-size: 14px !important;
+        text-align: center;
+    }
+
+    .logo-tagline {
+        display: block !important;
+        font-size: 10.5px !important;
+        text-align: center;
     }
 
     .nav-toggle {
