@@ -1270,6 +1270,14 @@ body {
     border-bottom: none;
 }
 
+/* CÔNG DÂN: hover xanh dương */
+.category-section:not(.category-section-business) .category-link:hover {
+    background: rgba(21, 101, 192, 0.10);
+    color: #1565C0;
+    box-shadow: 0 2px 10px rgba(21, 101, 192, 0.08);
+}
+
+/* DOANH NGHIỆP: hover cam gốc */
 .category-link:hover {
     background: rgba(206, 122, 88, 0.13);
     color: #CE7A58;
@@ -1283,7 +1291,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(206, 122, 88, 0.12);
+    background: rgba(21, 101, 192, 0.10);
     border-radius: 4px;
     margin-right: 12px;
 }
@@ -1298,8 +1306,22 @@ body {
     object-fit: contain;
 }
 
+/* CÔNG DÂN: icon màu xanh dương */
 img.category-img-icon {
+    filter: brightness(0) saturate(100%) invert(22%) sepia(90%) saturate(1000%) hue-rotate(200deg) brightness(1.05);
+}
+
+svg.category-img-icon {
+    filter: brightness(0) saturate(100%) invert(22%) sepia(90%) saturate(1000%) hue-rotate(200deg) brightness(1.05);
+}
+
+/* DOANH NGHIỆP: icon màu cam/nâu gốc */
+.category-section-business img.category-img-icon {
     filter: brightness(0) saturate(100%) invert(54%) sepia(34%) saturate(601%) hue-rotate(330deg) brightness(101%);
+}
+
+.category-section-business svg.category-img-icon {
+    filter: none;
 }
 
 .category-link-text {
